@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunch Buddy - mPower MiniApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/400.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/500.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/600.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/700.css">
+    <style>
+        :root {
+            --primary: #3A67EF;
+            --secondary: #48A6CD;
+            --text-primary: #121925;
+            --text-secondary: #4A4E59;
+            --text-tertiary: #777D8C;
+            --background: #F2F5F8;
+            --border: #DCE0E6;
+            --dark-section: #0F0E13;
+            --btn-gradient: linear-gradient(135deg, #0014FF, #0012E1);
+            --btn-radius: 14px;
+            --badge-color: #48A6CD;
+            --badge-bg: rgba(72, 166, 205, 0.1);
+            --badge-border: rgba(72, 166, 205, 0.15);
+            --font-display: "Mona Sans", sans-serif;
+            --font-body: "Geist Sans", "Geist", sans-serif;
+            --success: #1DAC76;
+            --warning: #F0BE48;
+            --error: #E53E3E;
+            --system-60: #B9C1D1;
+            --system-40: #E2E7F2;
+            --system-30: #EFF2F8;
+            --white: #FFFFFF;
+            --rounded-card: 18px;
+            --rounded-btn: 14px;
+            --rounded-input: 14px;
+            --rounded-badge: 50px;
+            --rounded-modal: 18px;
+            --transition: 300ms ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        header {
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        form {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--rounded-card);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--rounded-input);
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(58, 103, 239, 0.1);
+        }
+
+        input[type="date"] {
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            min-height: 48px;
+            padding: 0 20px;
+            border: none;
+            border-radius: var(--rounded-btn);
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+
+        .btn-primary {
+            background: var(--btn-gradient);
+            color: var(--white);
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--system-40);
+            color: var(--primary);
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: var(--system-30);
+        }
+
+        .lunch-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .lunch-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--rounded-card);
+            padding: 16px;
+            transition: var(--transition);
+            cursor: default;
+        }
+
+        .lunch-card:hover {
+            transform: scale(1.01);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .card-restaurant {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-time {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .participants-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--badge-bg);
+            border: 1px solid var(--badge-border);
+            border-radius: var(--rounded-badge);
+            color: var(--badge-color);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .organizer {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+        }
+
+        .card-actions {
+            margin-top: 12px;
+        }
+
+        .btn-join {
+            width: 100%;
+            min-height: 44px;
+            background: var(--btn-gradient);
+            color: var(--white);
+            border: none;
+            border-radius: var(--rounded-btn);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-join:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-join:active {
+            transform: scale(0.98);
+        }
+
+        .btn-join.joined {
+            background: var(--success);
+            cursor: default;
+        }
+
+        .poll-section {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--rounded-card);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .poll-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .poll-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .poll-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--system-30);
+            border: 1px solid var(--border);
+            border-radius: var(--rounded-input);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .poll-option:hover {
+            background: var(--system-40);
+        }
+
+        .poll-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .poll-option label {
+            flex: 1;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .poll-vote-count {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-left: auto;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: var(--dark-section);
+            color: var(--white);
+            padding: 12px 16px;
+            border-radius: var(--rounded-input);
+            font-size: 14px;
+            max-width: 320px;
+            text-align: center;
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 32px 16px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
+        }
+
+        .success-checkmark {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: var(--success);
+            color: var(--white);
+            border-radius: 50%;
+            line-height: 20px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            form {
+                padding: 16px;
+            }
+
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Lunch Buddy</h1>
+            <p class="header-subtitle">Find your lunch mates at KOBIL Worms</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="plans">Today's Plans</button>
+            <button class="tab-btn" data-tab="create">Create Plan</button>
+            <button class="tab-btn" data-tab="poll">This Week's Poll</button>
+        </div>
+
+        <div id="plans" class="tab-content active">
+            <div id="plans-container" class="lunch-grid"></div>
+        </div>
+
+        <div id="create" class="tab-content">
+            <form id="create-form">
+                <div class="form-group">
+                    <label for="restaurant">Restaurant Name</label>
+                    <input type="text" id="restaurant" placeholder="e.g. Pizzeria Da Luigi" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Time</label>
+                    <select id="time" required>
+                        <option value="">Select time</option>
+                        <option value="11:30">11:30</option>
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="max-seats">Maximum Seats</label>
+                    <input type="number" id="max-seats" min="2" max="20" placeholder="e.g. 5" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn-primary">Create Plan</button>
+                    <button type="reset" class="btn-secondary">Clear</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="poll" class="tab-content">
+            <div class="poll-section">
+                <div class="poll-title">This week's top pick?</div>
+                <div class="poll-options" id="poll-options"></div>
+                <button id="submit-vote-btn" class="btn-primary" style="width: 100%; margin-top: 16px;">Submit Vote</button>
+            </div>
+            <div id="poll-results"></div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Demo data
+        const DEMO_PEOPLE = [
+            "Necati Ozal",
+            "Berkay Saribas",
+            "Elif Keskin",
+            "Ozgur Koyun",
+            "Marcus Lippert",
+            "Jan Wunderlich"
+        ];
+
+        const DEMO_RESTAURANTS = [
+            "Pizzeria Da Luigi",
+            "Asia Wok Express",
+            "Burger House Worms",
+            "Mensa KOBIL"
+        ];
+
+        let lunchPlans = [];
+        let pollVotes = {};
+
+        class LunchBuddy {
+            constructor() {
+                this.initializeToday();
+                this.setupEventListeners();
+                this.setDefaultDate();
+                this.loadDemoData();
+                this.renderPlans();
+                this.renderPoll();
+            }
+
+            initializeToday() {
+                const today = new Date();
+                window.todayString = today.toISOString().split('T')[0];
+            }
+
+            setDefaultDate() {
+                const dateInput = document.getElementById('date');
+                dateInput.value = window.todayString;
+            }
+
+            setupEventListeners() {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.switchTab(e.target));
+                });
+
+                document.getElementById('create-form').addEventListener('submit', (e) => this.createPlan(e));
+                document.getElementById('submit-vote-btn').addEventListener('click', () => this.submitVote());
+            }
+
+            loadDemoData() {
+                lunchPlans = [
+                    {
+                        id: 1,
+                        restaurant: "Pizzeria Da Luigi",
+                        date: window.todayString,
+                        time: "12:00",
+                        maxSeats: 5,
+                        organizer: "Necati Ozal",
+                        participants: ["Necati Ozal", "Berkay Saribas"],
+                        joined: false
+                    },
+                    {
+                        id: 2,
+                        restaurant: "Asia Wok Express",
+                        date: window.todayString,
+                        time: "12:30",
+                        maxSeats: 4,
+                        organizer: "Elif Keskin",
+                        participants: ["Elif Keskin", "Ozgur Koyun", "Marcus Lippert"],
+                        joined: false
+                    },
+                    {
+                        id: 3,
+                        restaurant: "Burger House Worms",
+                        date: window.todayString,
+                        time: "11:30",
+                        maxSeats: 6,
+                        organizer: "Jan Wunderlich",
+                        participants: ["Jan Wunderlich"],
+                        joined: false
+                    }
+                ];
+
+                pollVotes = {
+                    "Pizzeria Da Luigi": 12,
+                    "Asia Wok Express": 8,
+                    "Burger House Worms": 15,
+                    "Mensa KOBIL": 5
+                };
+            }
+
+            switchTab(btn) {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            }
+
+            createPlan(e) {
+                e.preventDefault();
+
+                const restaurant = document.getElementById('restaurant').value.trim();
+                const date = document.getElementById('date').value;
+                const time = document.getElementById('time').value;
+                const maxSeats = parseInt(document.getElementById('max-seats').value);
+
+                if (!restaurant || !date || !time || !maxSeats) {
+                    this.showToast('Please fill in all fields', 'error');
+                    return;
+                }
+
+                const newPlan = {
+                    id: Date.now(),
+                    restaurant,
+                    date,
+                    time,
+                    maxSeats,
+                    organizer: "Current User",
+                    participants: ["Current User"],
+                    joined: false
+                };
+
+                lunchPlans.push(newPlan);
+                this.sortPlans();
+                this.renderPlans();
+
+                document.getElementById('create-form').reset();
+                this.setDefaultDate();
+
+                this.showToast('Lunch plan created successfully!', 'success');
+
+                document.querySelector('[data-tab="plans"]').click();
+            }
+
+            joinPlan(planId) {
+                const plan = lunchPlans.find(p => p.id === planId);
+                if (!plan) return;
+
+                if (plan.joined) {
+                    this.showToast('You already joined this plan', 'warning');
+                    return;
+                }
+
+                if (plan.participants.length >= plan.maxSeats) {
+                    this.showToast('This plan is full', 'error');
+                    return;
+                }
+
+                plan.participants.push("You");
+                plan.joined = true;
+
+                this.renderPlans();
+                this.showToast('Joined! Group chat opening in mChat');
+
+                // Simulate mChat opening
+                setTimeout(() => {
+                    console.log('Opening group chat for:', plan.restaurant);
+                }, 500);
+            }
+
+            sortPlans() {
+                lunchPlans.sort((a, b) => {
+                    if (a.date !== b.date) {
+                        return a.date.localeCompare(b.date);
+                    }
+                    return a.time.localeCompare(b.time);
+                });
+            }
+
+            renderPlans() {
+                const container = document.getElementById('plans-container');
+
+                const todayPlans = lunchPlans.filter(p => p.date === window.todayString);
+
+                if (todayPlans.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🍽️</div>
+                            <div class="empty-state-text">No lunch plans yet. Create one to get started!</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = todayPlans.map(plan => `
+                    <div class="lunch-card">
+                        <div class="card-header">
+                            <div class="card-restaurant">${this.escapeHtml(plan.restaurant)}</div>
+                        </div>
+                        <div class="card-time">${plan.time}</div>
+                        <div>
+                            <span class="participants-badge">${plan.participants.length}/${plan.maxSeats} joined</span>
+                        </div>
+                        <div class="organizer">Organized by ${this.escapeHtml(plan.organizer)}</div>
+                        <div class="card-actions">
+                            <button class="btn-join ${plan.joined ? 'joined' : ''}"
+                                    onclick="app.joinPlan(${plan.id})"
+                                    ${plan.joined || plan.participants.length >= plan.maxSeats ? 'disabled' : ''}>
+                                ${plan.joined ? '<span class="success-checkmark">✓</span>Joined' : 'Join Plan'}
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderPoll() {
+                const pollOptions = document.getElementById('poll-options');
+
+                pollOptions.innerHTML = DEMO_RESTAURANTS.map(restaurant => `
+                    <label class="poll-option">
+                        <input type="radio" name="poll" value="${restaurant}">
+                        <span>${this.escapeHtml(restaurant)}</span>
+                        <span class="poll-vote-count">${pollVotes[restaurant] || 0} votes</span>
+                    </label>
+                `).join('');
+            }
+
+            submitVote() {
+                const selected = document.querySelector('input[name="poll"]:checked');
+
+                if (!selected) {
+                    this.showToast('Please select a restaurant', 'warning');
+                    return;
+                }
+
+                const restaurant = selected.value;
+                pollVotes[restaurant] = (pollVotes[restaurant] || 0) + 1;
+
+                document.querySelectorAll('input[name="poll"]').forEach(input => {
+                    input.disabled = true;
+                });
+
+                document.getElementById('submit-vote-btn').disabled = true;
+                document.getElementById('submit-vote-btn').textContent = 'Vote Submitted';
+                document.getElementById('submit-vote-btn').style.opacity = '0.6';
+
+                this.showToast('Vote submitted! Thanks for voting');
+                this.renderPoll();
+            }
+
+            showToast(message, type = 'info') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            escapeHtml(text) {
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+        }
+
+        const app = new LunchBuddy();
+    </script>
+</body>
+</html>

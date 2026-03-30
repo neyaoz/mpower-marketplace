@@ -55,7 +55,7 @@
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 0 16px;
     }
 
     header {
@@ -199,8 +199,22 @@
 
     .events-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: 1fr;
       gap: 20px;
+    }
+
+    @media (min-width: 600px) {
+      .events-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (min-width: 960px) {
+      .events-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
     }
 
     .event-card {

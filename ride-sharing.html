@@ -276,11 +276,28 @@
       border-radius: var(--rounded-card);
       padding: 20px;
       transition: var(--transition);
+      display: flex;
+      gap: 16px;
     }
 
     .card:hover {
       transform: scale(1.01);
       border-color: var(--primary);
+    }
+
+    .card-city-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid var(--system-40);
+    }
+
+    .card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .card-header {
@@ -521,6 +538,18 @@
     const routes = ['Mannheim', 'Frankfurt', 'Heidelberg', 'Mainz', 'Darmstadt', 'Ludwigshafen', 'Kaiserslautern', 'Karlsruhe'];
     const destination = 'Worms';
 
+    const cityImages = {
+      "Mannheim": "https://picsum.photos/seed/mannheimcity/80/80",
+      "Frankfurt": "https://picsum.photos/seed/frankfurtskyline/80/80",
+      "Heidelberg": "https://picsum.photos/seed/heidelbergcastle/80/80",
+      "Mainz": "https://picsum.photos/seed/mainzdom/80/80",
+      "Darmstadt": "https://picsum.photos/seed/darmstadtcity/80/80",
+      "Ludwigshafen": "https://picsum.photos/seed/ludwigshafenrhein/80/80",
+      "Kaiserslautern": "https://picsum.photos/seed/kaiserslauternpfalz/80/80",
+      "Karlsruhe": "https://picsum.photos/seed/karlsruhefan/80/80",
+      "Worms": "https://picsum.photos/seed/wormsdom/80/80"
+    };
+
     let rideOffers = [];
     let rideRequests = [];
     let activeOfferFilter = 'all';
@@ -737,27 +766,30 @@
 
       container.innerHTML = filtered.map(offer => `
         <div class="card">
-          <div class="card-header">
-            <div class="card-route">${offer.from} → ${offer.to}</div>
-            <div class="badge">${offer.seats} seats</div>
-          </div>
-          <div class="card-info">
-            <div class="info-row">
-              <span>Driver:</span>
-              <strong>${offer.driver}</strong>
+          <img src="${cityImages[offer.from] || 'https://picsum.photos/seed/generic/80/80'}" alt="${offer.from}" class="card-city-image">
+          <div class="card-content">
+            <div class="card-header">
+              <div class="card-route">${offer.from} → ${offer.to}</div>
+              <div class="badge">${offer.seats} seats</div>
             </div>
-            <div class="info-row">
-              <span>Date:</span>
-              <strong>${formatDate(offer.date)}</strong>
+            <div class="card-info">
+              <div class="info-row">
+                <span>Driver:</span>
+                <strong>${offer.driver}</strong>
+              </div>
+              <div class="info-row">
+                <span>Date:</span>
+                <strong>${formatDate(offer.date)}</strong>
+              </div>
+              <div class="info-row">
+                <span>Time:</span>
+                <strong>${offer.time}</strong>
+              </div>
             </div>
-            <div class="info-row">
-              <span>Time:</span>
-              <strong>${offer.time}</strong>
+            <div class="card-actions">
+              <button class="btn-card" onclick="requestSeat('${offer.driver}')">Request Seat</button>
+              <button class="btn-card" style="color: #777D8C; cursor: default;" disabled>More Info</button>
             </div>
-          </div>
-          <div class="card-actions">
-            <button class="btn-card" onclick="requestSeat('${offer.driver}')">Request Seat</button>
-            <button class="btn-card" style="color: #777D8C; cursor: default;" disabled>More Info</button>
           </div>
         </div>
       `).join('');
@@ -777,26 +809,29 @@
 
       container.innerHTML = filtered.map(request => `
         <div class="card">
-          <div class="card-header">
-            <div class="card-route">${request.from} → ${request.to}</div>
-          </div>
-          <div class="card-info">
-            <div class="info-row">
-              <span>Requester:</span>
-              <strong>${request.requester}</strong>
+          <img src="${cityImages[request.from] || 'https://picsum.photos/seed/generic/80/80'}" alt="${request.from}" class="card-city-image">
+          <div class="card-content">
+            <div class="card-header">
+              <div class="card-route">${request.from} → ${request.to}</div>
             </div>
-            <div class="info-row">
-              <span>Date:</span>
-              <strong>${formatDate(request.date)}</strong>
+            <div class="card-info">
+              <div class="info-row">
+                <span>Requester:</span>
+                <strong>${request.requester}</strong>
+              </div>
+              <div class="info-row">
+                <span>Date:</span>
+                <strong>${formatDate(request.date)}</strong>
+              </div>
+              <div class="info-row">
+                <span>Preferred Time:</span>
+                <strong>${request.time}</strong>
+              </div>
             </div>
-            <div class="info-row">
-              <span>Preferred Time:</span>
-              <strong>${request.time}</strong>
+            <div class="card-actions">
+              <button class="btn-card" onclick="offerRide('${request.requester}')">Offer Ride</button>
+              <button class="btn-card" style="color: #777D8C; cursor: default;" disabled>More Info</button>
             </div>
-          </div>
-          <div class="card-actions">
-            <button class="btn-card" onclick="offerRide('${request.requester}')">Offer Ride</button>
-            <button class="btn-card" style="color: #777D8C; cursor: default;" disabled>More Info</button>
           </div>
         </div>
       `).join('');

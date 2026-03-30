@@ -205,13 +205,26 @@
             background: var(--white);
             border: 1px solid var(--border);
             border-radius: var(--rounded-card);
-            padding: 16px;
+            overflow: hidden;
             transition: var(--transition);
             cursor: default;
         }
 
         .lunch-card:hover {
             transform: scale(1.01);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background-color: #F0F2F5;
+            border-radius: 12px 12px 0 0;
+            display: block;
+        }
+
+        .card-content {
+            padding: 16px;
         }
 
         .card-header {
@@ -506,6 +519,24 @@
             "Indian Palace",
             "Bistro Rheinterrasse"
         ];
+
+        const restaurantImages = {
+            "Pizzeria Da Luigi": "https://picsum.photos/seed/italianpizza/300/160",
+            "Asia Wok Express": "https://picsum.photos/seed/asianwok/300/160",
+            "Burger House Worms": "https://picsum.photos/seed/burgerhouse/300/160",
+            "Mensa KOBIL": "https://picsum.photos/seed/canteenfood/300/160",
+            "Gasthof zum Adler": "https://picsum.photos/seed/germanfood/300/160",
+            "Doner Kebab Istanbul": "https://picsum.photos/seed/donerkebab/300/160",
+            "Sushi Garden Worms": "https://picsum.photos/seed/sushiplate/300/160",
+            "El Taco Loco": "https://picsum.photos/seed/mexicantaco/300/160",
+            "Cafe Mittendrin": "https://picsum.photos/seed/cafelatte/300/160",
+            "Backstube Muller": "https://picsum.photos/seed/freshbread/300/160",
+            "Thai Orchid": "https://picsum.photos/seed/thaibasil/300/160",
+            "Curry Express": "https://picsum.photos/seed/curryrice/300/160",
+            "Griechisches Restaurant Olympia": "https://picsum.photos/seed/greekfood/300/160",
+            "Indian Palace": "https://picsum.photos/seed/indiancurry/300/160",
+            "Bistro Rheinterrasse": "https://picsum.photos/seed/bistrolunch/300/160"
+        };
 
         let lunchPlans = [];
         let pollVotes = {};
@@ -870,20 +901,23 @@
 
                 container.innerHTML = todayPlans.map(plan => `
                     <div class="lunch-card">
-                        <div class="card-header">
-                            <div class="card-restaurant">${this.escapeHtml(plan.restaurant)}</div>
-                        </div>
-                        <div class="card-time">${plan.time}</div>
-                        <div>
-                            <span class="participants-badge">${plan.participants.length}/${plan.maxSeats} joined</span>
-                        </div>
-                        <div class="organizer">Organized by ${this.escapeHtml(plan.organizer)}</div>
-                        <div class="card-actions">
-                            <button class="btn-join ${plan.joined ? 'joined' : ''}"
-                                    onclick="app.joinPlan(${plan.id})"
-                                    ${plan.joined || plan.participants.length >= plan.maxSeats ? 'disabled' : ''}>
-                                ${plan.joined ? '<span class="success-checkmark">✓</span>Joined' : 'Join Plan'}
-                            </button>
+                        <img src="${restaurantImages[plan.restaurant] || ''}" alt="${this.escapeHtml(plan.restaurant)}" class="card-image" style="background-color: #F0F2F5;">
+                        <div class="card-content">
+                            <div class="card-header">
+                                <div class="card-restaurant">${this.escapeHtml(plan.restaurant)}</div>
+                            </div>
+                            <div class="card-time">${plan.time}</div>
+                            <div>
+                                <span class="participants-badge">${plan.participants.length}/${plan.maxSeats} joined</span>
+                            </div>
+                            <div class="organizer">Organized by ${this.escapeHtml(plan.organizer)}</div>
+                            <div class="card-actions">
+                                <button class="btn-join ${plan.joined ? 'joined' : ''}"
+                                        onclick="app.joinPlan(${plan.id})"
+                                        ${plan.joined || plan.participants.length >= plan.maxSeats ? 'disabled' : ''}>
+                                    ${plan.joined ? '<span class="success-checkmark">✓</span>Joined' : 'Join Plan'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `).join('');

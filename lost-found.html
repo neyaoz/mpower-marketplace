@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost & Found - mPower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #3A67EF;
+      --secondary: #48A6CD;
+      --text-primary: #121925;
+      --text-secondary: #4A4E59;
+      --text-tertiary: #777D8C;
+      --background: #F2F5F8;
+      --border: #DCE0E6;
+      --btn-gradient: linear-gradient(135deg, #0014FF, #0012E1);
+      --font-display: "Mona Sans", sans-serif;
+      --font-body: "Geist Sans", "Geist", sans-serif;
+      --success: #1DAC76;
+      --warning: #F0BE48;
+      --system-60: #B9C1D1;
+      --system-40: #E2E7F2;
+      --system-30: #EFF2F8;
+      --white: #FFFFFF;
+      --rounded-card: 18px;
+      --rounded-btn: 14px;
+      --rounded-input: 14px;
+      --rounded-badge: 50px;
+      --rounded-modal: 18px;
+      --transition: 300ms ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--background);
+      color: var(--text-primary);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 20px;
+      margin-bottom: 0;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      margin: 0;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 16px 24px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 500;
+      font-family: var(--font-body);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: var(--transition);
+      max-width: 200px;
+      text-align: center;
+    }
+
+    .tab-button.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-button:hover:not(.active) {
+      color: var(--text-primary);
+    }
+
+    .main-content {
+      padding: 24px 20px;
+      background: var(--background);
+      min-height: calc(100vh - 200px);
+    }
+
+    .content-max {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--btn-gradient);
+      color: var(--white);
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--rounded-btn);
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 20, 255, 0.2);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      padding: 12px 20px;
+      border-radius: var(--rounded-btn);
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-secondary:hover {
+      background: var(--system-30);
+      border-color: var(--primary);
+    }
+
+    .btn-small {
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--rounded-btn);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-small:hover {
+      background: #2952d4;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-card);
+      padding: 20px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      background: var(--system-30);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      font-size: 14px;
+      overflow: hidden;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .card-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      background: var(--system-40);
+      color: var(--text-secondary);
+      border-radius: var(--rounded-badge);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .badge-location {
+      background: var(--system-40);
+      color: var(--text-secondary);
+    }
+
+    .badge-date {
+      background: var(--system-40);
+      color: var(--text-secondary);
+    }
+
+    .card-reporter {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-bottom: 16px;
+    }
+
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card-action-full {
+      display: block;
+      width: 100%;;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--white);
+      border-radius: var(--rounded-modal);
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-input);
+      font-size: 14px;
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(58, 103, 239, 0.1);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-file {
+      position: relative;
+    }
+
+    .file-input-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 20px;
+      background: var(--system-30);
+      border: 2px dashed var(--border);
+      border-radius: var(--rounded-input);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .file-input-label:hover {
+      background: var(--system-40);
+      border-color: var(--primary);
+    }
+
+    .file-input-label input {
+      display: none;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .modal-close {
+      background: var(--white);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      padding: 12px 24px;
+      border-radius: var(--rounded-btn);
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: var(--transition);
+      min-height: 48px;
+    }
+
+    .modal-close:hover {
+      background: var(--system-30);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state-text {
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    .confirmation-modal {
+      text-align: center;
+    }
+
+    .confirmation-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .confirmation-modal-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .signature-section {
+      background: var(--system-30);
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        padding: 24px;
+      }
+
+      .tab-button {
+        max-width: none;
+      }
+    }
+
+    .success-badge {
+      background: rgba(29, 172, 118, 0.1);
+      color: var(--success);
+    }
+
+    .warning-badge {
+      background: rgba(240, 190, 72, 0.1);
+      color: var(--warning);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1 class="header-title">Lost & Found</h1>
+    </div>
+  </header>
+
+  <nav class="tab-nav">
+    <button class="tab-button active" data-tab="found">Found Items</button>
+    <button class="tab-button" data-tab="lost">Lost Items</button>
+  </nav>
+
+  <div class="main-content">
+    <div class="content-max">
+      <div class="tab-panel active" id="found-panel">
+        <div class="action-bar">
+          <button class="btn-primary" onclick="openReportFoundModal()">+ Report Found Item</button>
+        </div>
+        <div id="found-items-grid" class="cards-grid"></div>
+      </div>
+
+      <div class="tab-panel" id="lost-panel">
+        <div class="action-bar">
+          <button class="btn-primary" onclick="openReportLostModal()">+ Report Lost Item</button>
+        </div>
+        <div id="lost-items-grid" class="cards-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="report-found-modal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-header">Report Found Item</h2>
+      <form onsubmit="submitFoundItem(event)">
+        <div class="form-group">
+          <label class="form-label">Item Title</label>
+          <input type="text" class="form-input" id="found-title" placeholder="e.g., Black Umbrella" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="found-description" placeholder="Describe the item..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Location Found</label>
+          <input type="text" class="form-input" id="found-location" placeholder="e.g., 2nd Floor Kitchen" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date Found</label>
+          <input type="date" class="form-input" id="found-date" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Photo (optional)</label>
+          <div class="form-file">
+            <label class="file-input-label">
+              <input type="file" accept="image/*" id="found-photo">
+              <span>Click to upload photo or drag and drop</span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-close" onclick="closeReportFoundModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Report Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="report-lost-modal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-header">Report Lost Item</h2>
+      <form onsubmit="submitLostItem(event)">
+        <div class="form-group">
+          <label class="form-label">Item Title</label>
+          <input type="text" class="form-input" id="lost-title" placeholder="e.g., Silver Watch" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="lost-description" placeholder="Describe the item..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Seen Location</label>
+          <input type="text" class="form-input" id="lost-location" placeholder="e.g., Meeting Room A" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date Lost</label>
+          <input type="date" class="form-input" id="lost-date" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-close" onclick="closeReportLostModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Report Lost Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="contact-finder-modal" class="modal">
+    <div class="modal-content">
+      <div class="confirmation-modal">
+        <div class="confirmation-modal-title">Contact Finder</div>
+        <div class="confirmation-modal-text" id="contact-finder-text"></div>
+        <div class="signature-section">
+          mChat message will be sent to the finder to arrange item handover.
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-close" onclick="closeContactModal()">Cancel</button>
+          <button type="button" class="btn-primary" onclick="sendFinderMessage()">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="contact-reporter-modal" class="modal">
+    <div class="modal-content">
+      <div class="confirmation-modal">
+        <div class="confirmation-modal-title">Contact Item Reporter</div>
+        <div class="confirmation-modal-text" id="contact-reporter-text"></div>
+        <div class="signature-section">
+          mChat message will be sent to the reporter to confirm this is their item.
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-close" onclick="closeContactModal()">Cancel</button>
+          <button type="button" class="btn-primary" onclick="sendReporterMessage()">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="handover-modal" class="modal">
+    <div class="modal-content">
+      <h2 class="modal-header">Item Handover</h2>
+      <div class="signature-section" style="margin-bottom: 24px;">
+        For valuable items, both parties must confirm handover with digital signature via mSign.
+      </div>
+      <div id="handover-details"></div>
+      <div class="modal-actions">
+        <button type="button" class="modal-close" onclick="closeHandoverModal()">Close</button>
+        <button type="button" class="btn-primary" onclick="initiateSignature()">Start mSign Confirmation</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const people = [
+      "Necati Ozal",
+      "Berkay Saribas",
+      "Elif Keskin",
+      "Ozgur Koyun",
+      "Marcus Lippert",
+      "Jan Wunderlich"
+    ];
+
+    const demoFoundItems = [
+      {
+        id: 1,
+        title: "Black Umbrella",
+        description: "Black compact umbrella, appears to be in good condition",
+        location: "2nd Floor Kitchen",
+        date: "2026-03-28",
+        reporter: "Berkay Saribas",
+        photo: null,
+        valuable: false
+      },
+      {
+        id: 2,
+        title: "AirPods Pro Case",
+        description: "White AirPods Pro case with charging cable, still sealed",
+        location: "Meeting Room A",
+        date: "2026-03-27",
+        reporter: "Elif Keskin",
+        photo: null,
+        valuable: true
+      },
+      {
+        id: 3,
+        title: "Blue Water Bottle",
+        description: "Reusable blue water bottle with company logo",
+        location: "Lobby",
+        date: "2026-03-29",
+        reporter: "Marcus Lippert",
+        photo: null,
+        valuable: false
+      }
+    ];
+
+    const demoLostItems = [
+      {
+        id: 101,
+        title: "Silver Watch",
+        description: "Silver analog watch, round face, appears to be a luxury brand",
+        location: "Conference Room B",
+        date: "2026-03-26",
+        reporter: "Ozgur Koyun",
+        valuable: true
+      },
+      {
+        id: 102,
+        title: "Car Keys with BMW Keychain",
+        description: "Black car keys with silver BMW logo keychain",
+        location: "Office Parking Lot",
+        date: "2026-03-29",
+        reporter: "Jan Wunderlich",
+        valuable: true
+      },
+      {
+        id: 103,
+        title: "Reading Glasses",
+        description: "Brown tortoiseshell reading glasses in black case",
+        location: "3rd Floor Lounge",
+        date: "2026-03-28",
+        reporter: "Necati Ozal",
+        valuable: false
+      }
+    ];
+
+    let currentItem = null;
+    let currentAction = null;
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+
+    function createFoundItemCard(item) {
+      return `
+        <div class="card">
+          <div class="card-image">
+            ${item.photo ? `<img src="${item.photo}" alt="${item.title}">` : '<span>No photo</span>'}
+          </div>
+          <div class="card-title">${item.title}</div>
+          <div class="card-description">${item.description}</div>
+          <div class="card-meta">
+            <span class="badge badge-location">${item.location}</span>
+            <span class="badge badge-date">${formatDate(item.date)}</span>
+          </div>
+          <div class="card-reporter">Found by ${item.reporter}</div>
+          <div class="card-actions">
+            <button class="btn-small" style="width: 100%; background: var(--success);" onclick="openContactFinder(${item.id})">This is mine!</button>
+            ${item.valuable ? '<div class="badge success-badge" style="width: 100%; justify-content: center;">Valuable item</div>' : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function createLostItemCard(item) {
+      return `
+        <div class="card">
+          <div class="card-image">
+            <span>No photo available</span>
+          </div>
+          <div class="card-title">${item.title}</div>
+          <div class="card-description">${item.description}</div>
+          <div class="card-meta">
+            <span class="badge badge-location">${item.location}</span>
+            <span class="badge badge-date">${formatDate(item.date)}</span>
+          </div>
+          <div class="card-reporter">Reported by ${item.reporter}</div>
+          <div class="card-actions">
+            <button class="btn-small" style="width: 100%; background: var(--success);" onclick="openContactReporter(${item.id})">I found this!</button>
+            ${item.valuable ? '<div class="badge success-badge" style="width: 100%; justify-content: center;">Valuable item</div>' : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFoundItems() {
+      const grid = document.getElementById('found-items-grid');
+      if (demoFoundItems.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">📭</div><div class="empty-state-text">No found items yet</div></div>';
+      } else {
+        grid.innerHTML = demoFoundItems.map(item => createFoundItemCard(item)).join('');
+      }
+    }
+
+    function renderLostItems() {
+      const grid = document.getElementById('lost-items-grid');
+      if (demoLostItems.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="empty-state-icon">🔍</div><div class="empty-state-text">No lost items reported</div></div>';
+      } else {
+        grid.innerHTML = demoLostItems.map(item => createLostItemCard(item)).join('');
+      }
+    }
+
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', function() {
+        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+        this.classList.add('active');
+        const tabName = this.getAttribute('data-tab');
+        document.getElementById(tabName + '-panel').classList.add('active');
+      });
+    });
+
+    function openReportFoundModal() {
+      document.getElementById('report-found-modal').classList.add('active');
+      document.getElementById('found-date').valueAsDate = new Date();
+    }
+
+    function closeReportFoundModal() {
+      document.getElementById('report-found-modal').classList.remove('active');
+      document.getElementById('found-title').value = '';
+      document.getElementById('found-description').value = '';
+      document.getElementById('found-location').value = '';
+      document.getElementById('found-date').value = '';
+      document.getElementById('found-photo').value = '';
+    }
+
+    function openReportLostModal() {
+      document.getElementById('report-lost-modal').classList.add('active');
+      document.getElementById('lost-date').valueAsDate = new Date();
+    }
+
+    function closeReportLostModal() {
+      document.getElementById('report-lost-modal').classList.remove('active');
+      document.getElementById('lost-title').value = '';
+      document.getElementById('lost-description').value = '';
+      document.getElementById('lost-location').value = '';
+      document.getElementById('lost-date').value = '';
+    }
+
+    function submitFoundItem(event) {
+      event.preventDefault();
+      const title = document.getElementById('found-title').value;
+      const description = document.getElementById('found-description').value;
+      const location = document.getElementById('found-location').value;
+      const date = document.getElementById('found-date').value;
+      const photoInput = document.getElementById('found-photo');
+
+      let photo = null;
+      if (photoInput.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          photo = e.target.result;
+          const newItem = {
+            id: Math.max(...demoFoundItems.map(i => i.id), 0) + 1,
+            title,
+            description,
+            location,
+            date,
+            reporter: people[Math.floor(Math.random() * people.length)],
+            photo,
+            valuable: Math.random() > 0.7
+          };
+          demoFoundItems.push(newItem);
+          renderFoundItems();
+          closeReportFoundModal();
+        };
+        reader.readAsDataURL(photoInput.files[0]);
+      } else {
+        const newItem = {
+          id: Math.max(...demoFoundItems.map(i => i.id), 0) + 1,
+          title,
+          description,
+          location,
+          date,
+          reporter: people[Math.floor(Math.random() * people.length)],
+          photo: null,
+          valuable: Math.random() > 0.7
+        };
+        demoFoundItems.push(newItem);
+        renderFoundItems();
+        closeReportFoundModal();
+      }
+    }
+
+    function submitLostItem(event) {
+      event.preventDefault();
+      const title = document.getElementById('lost-title').value;
+      const description = document.getElementById('lost-description').value;
+      const location = document.getElementById('lost-location').value;
+      const date = document.getElementById('lost-date').value;
+
+      const newItem = {
+        id: Math.max(...demoLostItems.map(i => i.id), 0) + 1,
+        title,
+        description,
+        location,
+        date,
+        reporter: people[Math.floor(Math.random() * people.length)],
+        valuable: Math.random() > 0.7
+      };
+      demoLostItems.push(newItem);
+      renderLostItems();
+      closeReportLostModal();
+    }
+
+    function openContactFinder(itemId) {
+      const item = demoFoundItems.find(i => i.id === itemId);
+      if (item) {
+        currentItem = item;
+        currentAction = 'contact-finder';
+        document.getElementById('contact-finder-text').textContent = `Contact ${item.reporter} about the ${item.title} found at ${item.location}?`;
+        document.getElementById('contact-finder-modal').classList.add('active');
+      }
+    }
+
+    function openContactReporter(itemId) {
+      const item = demoLostItems.find(i => i.id === itemId);
+      if (item) {
+        currentItem = item;
+        currentAction = 'contact-reporter';
+        document.getElementById('contact-reporter-text').textContent = `Contact ${item.reporter} about the ${item.title} you found?`;
+        document.getElementById('contact-reporter-modal').classList.add('active');
+      }
+    }
+
+    function closeContactModal() {
+      document.getElementById('contact-finder-modal').classList.remove('active');
+      document.getElementById('contact-reporter-modal').classList.remove('active');
+    }
+
+    function sendFinderMessage() {
+      if (currentItem && currentItem.valuable) {
+        closeContactModal();
+        openHandoverModal(currentItem, 'found');
+      } else {
+        alert(`mChat message sent to ${currentItem.reporter}: "I believe I am the owner of the ${currentItem.title} found at ${currentItem.location}. Can we arrange to meet?"`);
+        closeContactModal();
+      }
+    }
+
+    function sendReporterMessage() {
+      if (currentItem && currentItem.valuable) {
+        closeContactModal();
+        openHandoverModal(currentItem, 'lost');
+      } else {
+        alert(`mChat message sent to ${currentItem.reporter}: "I found your ${currentItem.title} at ${currentItem.location}. Let's arrange to return it to you."`);
+        closeContactModal();
+      }
+    }
+
+    function openHandoverModal(item, type) {
+      let finderName, reporterName;
+
+      if (type === 'found') {
+        finderName = item.reporter;
+        reporterName = 'You';
+      } else {
+        finderName = 'You';
+        reporterName = item.reporter;
+      }
+
+      document.getElementById('handover-details').innerHTML = `
+        <div class="form-group">
+          <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">Item Details:</div>
+          <div style="font-size: 15px; font-weight: 600; color: var(--text-primary);">${item.title}</div>
+          <div style="font-size: 13px; color: var(--text-tertiary);">${item.description}</div>
+        </div>
+        <div class="form-group">
+          <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">Handover Parties:</div>
+          <div style="font-size: 13px; color: var(--text-secondary);">Finder: ${finderName}</div>
+          <div style="font-size: 13px; color: var(--text-secondary);">Recipient: ${reporterName}</div>
+        </div>
+      `;
+
+      currentItem = item;
+      document.getElementById('handover-modal').classList.add('active');
+    }
+
+    function closeHandoverModal() {
+      document.getElementById('handover-modal').classList.remove('active');
+    }
+
+    function initiateSignature() {
+      alert(`mSign handover confirmation initiated for ${currentItem.title}. Both parties will receive signature requests on their mPower devices.`);
+      closeHandoverModal();
+    }
+
+    renderFoundItems();
+    renderLostItems();
+  </script>
+</body>
+</html>

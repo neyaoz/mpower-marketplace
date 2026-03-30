@@ -47,12 +47,13 @@
       font-family: var(--font-body);
       background-color: var(--background);
       color: var(--text-primary);
-      padding: 16px;
+      padding: 0 16px;
     }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
+      padding: 16px 0;
     }
 
     header {
@@ -143,8 +144,22 @@
 
     .equipment-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: 1fr;
       gap: 16px;
+    }
+
+    @media (min-width: 600px) {
+      .equipment-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (min-width: 960px) {
+      .equipment-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
     }
 
     .equipment-card {
@@ -435,10 +450,6 @@
 
       .category-chips {
         width: 100%;
-      }
-
-      .equipment-grid {
-        grid-template-columns: 1fr;
       }
 
       .modal {

@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ride Sharing - mPower</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/500.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/600.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/700.css">
+  <style>
+    :root {
+      --primary: #3A67EF;
+      --secondary: #48A6CD;
+      --text-primary: #121925;
+      --text-secondary: #4A4E59;
+      --text-tertiary: #777D8C;
+      --background: #F2F5F8;
+      --border: #DCE0E6;
+      --btn-gradient: linear-gradient(135deg, #0014FF, #0012E1);
+      --btn-radius: 14px;
+      --badge-color: #48A6CD;
+      --badge-bg: rgba(72, 166, 205, 0.1);
+      --badge-border: rgba(72, 166, 205, 0.15);
+      --font-display: "Mona Sans", sans-serif;
+      --font-body: "Geist Sans", "Geist", sans-serif;
+      --success: #1DAC76;
+      --warning: #F0BE48;
+      --system-60: #B9C1D1;
+      --system-40: #E2E7F2;
+      --system-30: #EFF2F8;
+      --white: #FFFFFF;
+      --rounded-card: 18px;
+      --rounded-btn: 14px;
+      --rounded-input: 14px;
+      --rounded-badge: 50px;
+      --rounded-modal: 18px;
+      --transition: 300ms ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--background);
+      color: var(--text-primary);
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .header p {
+      font-size: 14px;
+      color: var(--text-tertiary);
+    }
+
+    .tab-navigation {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      padding: 12px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: var(--transition);
+      font-family: var(--font-body);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chip {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      border-radius: var(--rounded-badge);
+      font-size: 13px;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .chip:hover {
+      background: var(--system-30);
+      border-color: var(--primary);
+    }
+
+    .chip.active {
+      background: var(--badge-bg);
+      border-color: var(--secondary);
+      color: var(--secondary);
+    }
+
+    .form-section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-card);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .form-section h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-group.full {
+      flex-direction: column;
+    }
+
+    .form-group.row {
+      flex-direction: row;
+      gap: 12px;
+    }
+
+    .form-group.row > div {
+      flex: 1;
+    }
+
+    .form-input {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .form-input label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-input input,
+    .form-input select {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-input);
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
+      transition: var(--transition);
+      background: var(--white);
+    }
+
+    .form-input input:focus,
+    .form-input select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(58, 103, 239, 0.1);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn-primary {
+      padding: 12px 24px;
+      min-height: 48px;
+      border: none;
+      border-radius: var(--rounded-btn);
+      background: var(--btn-gradient);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-body);
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 20, 255, 0.2);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      padding: 12px 24px;
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-btn);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-body);
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-secondary:hover {
+      background: var(--system-30);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .cards-container {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-card);
+      padding: 20px;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: scale(1.01);
+      border-color: var(--primary);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .card-route {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      border-radius: var(--rounded-badge);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--secondary);
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-secondary);
+    }
+
+    .info-row strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn-card {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      border-radius: var(--rounded-btn);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-body);
+    }
+
+    .btn-card:hover {
+      background: var(--system-30);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-card);
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+      color: var(--text-primary);
+      z-index: 1000;
+      animation: slideIn 300ms ease;
+      max-width: 300px;
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--success);
+      background: rgba(29, 172, 118, 0.05);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-tertiary);
+    }
+
+    .empty-state p {
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .form-group.row {
+        flex-direction: column;
+      }
+
+      .card-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Ride Sharing</h1>
+      <p>Find or offer rides for your commute in Worms</p>
+    </div>
+
+    <div class="tab-navigation">
+      <button class="tab-btn active" data-tab="offering">Offering Rides</button>
+      <button class="tab-btn" data-tab="seeking">Seeking Rides</button>
+    </div>
+
+    <div id="offering" class="tab-content active">
+      <div class="form-section">
+        <h2>Offer a Ride</h2>
+        <div class="form-group full">
+          <div class="form-input">
+            <label for="offerFrom">Departure City</label>
+            <input type="text" id="offerFrom" placeholder="e.g., Mannheim" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="form-input">
+            <label for="offerDate">Date</label>
+            <input type="date" id="offerDate" required>
+          </div>
+          <div class="form-input">
+            <label for="offerTime">Time</label>
+            <input type="time" id="offerTime" required>
+          </div>
+        </div>
+        <div class="form-group full">
+          <div class="form-input">
+            <label for="offerSeats">Available Seats</label>
+            <select id="offerSeats" required>
+              <option value="">Select seats</option>
+              <option value="1">1 seat</option>
+              <option value="2">2 seats</option>
+              <option value="3">3 seats</option>
+              <option value="4">4 seats</option>
+              <option value="5">5+ seats</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn-primary" onclick="createRideOffer()">Offer Ride</button>
+          <button class="btn-secondary" onclick="clearOfferForm()">Clear</button>
+        </div>
+      </div>
+
+      <div class="filter-chips">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="mannheim">Mannheim</button>
+        <button class="chip" data-filter="frankfurt">Frankfurt</button>
+        <button class="chip" data-filter="heidelberg">Heidelberg</button>
+        <button class="chip" data-filter="mainz">Mainz</button>
+        <button class="chip" data-filter="darmstadt">Darmstadt</button>
+      </div>
+
+      <div id="offeringCards" class="cards-container"></div>
+    </div>
+
+    <div id="seeking" class="tab-content">
+      <div class="form-section">
+        <h2>Seek a Ride</h2>
+        <div class="form-group full">
+          <div class="form-input">
+            <label for="seekFrom">Departure City</label>
+            <input type="text" id="seekFrom" placeholder="e.g., Mannheim" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="form-input">
+            <label for="seekDate">Date</label>
+            <input type="date" id="seekDate" required>
+          </div>
+          <div class="form-input">
+            <label for="seekTime">Preferred Time</label>
+            <input type="time" id="seekTime" required>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn-primary" onclick="createRideRequest()">Post Request</button>
+          <button class="btn-secondary" onclick="clearSeekForm()">Clear</button>
+        </div>
+      </div>
+
+      <div class="filter-chips">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="mannheim">Mannheim</button>
+        <button class="chip" data-filter="frankfurt">Frankfurt</button>
+        <button class="chip" data-filter="heidelberg">Heidelberg</button>
+        <button class="chip" data-filter="mainz">Mainz</button>
+        <button class="chip" data-filter="darmstadt">Darmstadt</button>
+      </div>
+
+      <div id="seekingCards" class="cards-container"></div>
+    </div>
+  </div>
+
+  <script>
+    const names = ['Necati Ozal', 'Berkay Saribas', 'Elif Keskin', 'Ozgur Koyun', 'Marcus Lippert', 'Jan Wunderlich'];
+    const routes = ['Mannheim', 'Frankfurt', 'Heidelberg', 'Mainz', 'Darmstadt'];
+    const destination = 'Worms';
+
+    let rideOffers = [];
+    let rideRequests = [];
+    let activeOfferFilter = 'all';
+    let activeSeekFilter = 'all';
+
+    function initializeDemoData() {
+      rideOffers = [
+        {
+          id: 1,
+          driver: 'Necati Ozal',
+          from: 'Mannheim',
+          to: destination,
+          date: '2026-04-02',
+          time: '08:15',
+          seats: '2'
+        },
+        {
+          id: 2,
+          driver: 'Berkay Saribas',
+          from: 'Frankfurt',
+          to: destination,
+          date: '2026-04-02',
+          time: '07:45',
+          seats: '3'
+        },
+        {
+          id: 3,
+          driver: 'Marcus Lippert',
+          from: 'Heidelberg',
+          to: destination,
+          date: '2026-04-03',
+          time: '09:00',
+          seats: '1'
+        },
+        {
+          id: 4,
+          driver: 'Elif Keskin',
+          from: 'Mainz',
+          to: destination,
+          date: '2026-04-02',
+          time: '08:30',
+          seats: '4'
+        }
+      ];
+
+      rideRequests = [
+        {
+          id: 1,
+          requester: 'Jan Wunderlich',
+          from: 'Frankfurt',
+          to: destination,
+          date: '2026-04-02',
+          time: '08:00'
+        },
+        {
+          id: 2,
+          requester: 'Ozgur Koyun',
+          from: 'Mannheim',
+          to: destination,
+          date: '2026-04-03',
+          time: '08:45'
+        },
+        {
+          id: 3,
+          requester: 'Marcus Lippert',
+          from: 'Darmstadt',
+          to: destination,
+          date: '2026-04-02',
+          time: '09:15'
+        }
+      ];
+    }
+
+    function renderOfferingCards() {
+      const container = document.getElementById('offeringCards');
+      const filtered = rideOffers.filter(offer => {
+        if (activeOfferFilter === 'all') return true;
+        return offer.from.toLowerCase() === activeOfferFilter;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No ride offers match your filter.</p></div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(offer => `
+        <div class="card">
+          <div class="card-header">
+            <div class="card-route">${offer.from} → ${offer.to}</div>
+            <div class="badge">${offer.seats} seats</div>
+          </div>
+          <div class="card-info">
+            <div class="info-row">
+              <span>Driver:</span>
+              <strong>${offer.driver}</strong>
+            </div>
+            <div class="info-row">
+              <span>Date:</span>
+              <strong>${formatDate(offer.date)}</strong>
+            </div>
+            <div class="info-row">
+              <span>Time:</span>
+              <strong>${offer.time}</strong>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-card" onclick="requestSeat('${offer.driver}')">Request Seat</button>
+            <button class="btn-card" style="color: #777D8C; cursor: default;" disabled>More Info</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderSeekingCards() {
+      const container = document.getElementById('seekingCards');
+      const filtered = rideRequests.filter(request => {
+        if (activeSeekFilter === 'all') return true;
+        return request.from.toLowerCase() === activeSeekFilter;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No ride requests match your filter.</p></div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(request => `
+        <div class="card">
+          <div class="card-header">
+            <div class="card-route">${request.from} → ${request.to}</div>
+          </div>
+          <div class="card-info">
+            <div class="info-row">
+              <span>Requester:</span>
+              <strong>${request.requester}</strong>
+            </div>
+            <div class="info-row">
+              <span>Date:</span>
+              <strong>${formatDate(request.date)}</strong>
+            </div>
+            <div class="info-row">
+              <span>Preferred Time:</span>
+              <strong>${request.time}</strong>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-card" onclick="offerRide('${request.requester}')">Offer Ride</button>
+            <button class="btn-card" style="color: #777D8C; cursor: default;" disabled>More Info</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr + 'T00:00:00');
+      return date.toLocaleDateString('en-GB', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function createRideOffer() {
+      const from = document.getElementById('offerFrom').value.trim();
+      const date = document.getElementById('offerDate').value;
+      const time = document.getElementById('offerTime').value;
+      const seats = document.getElementById('offerSeats').value;
+
+      if (!from || !date || !time || !seats) {
+        showToast('Please fill in all fields');
+        return;
+      }
+
+      const newOffer = {
+        id: Math.max(...rideOffers.map(o => o.id), 0) + 1,
+        driver: names[Math.floor(Math.random() * names.length)],
+        from: from.charAt(0).toUpperCase() + from.slice(1),
+        to: destination,
+        date,
+        time,
+        seats
+      };
+
+      rideOffers.unshift(newOffer);
+      clearOfferForm();
+      renderOfferingCards();
+      showToast('Ride offer created successfully');
+    }
+
+    function createRideRequest() {
+      const from = document.getElementById('seekFrom').value.trim();
+      const date = document.getElementById('seekDate').value;
+      const time = document.getElementById('seekTime').value;
+
+      if (!from || !date || !time) {
+        showToast('Please fill in all fields');
+        return;
+      }
+
+      const newRequest = {
+        id: Math.max(...rideRequests.map(r => r.id), 0) + 1,
+        requester: names[Math.floor(Math.random() * names.length)],
+        from: from.charAt(0).toUpperCase() + from.slice(1),
+        to: destination,
+        date,
+        time
+      };
+
+      rideRequests.unshift(newRequest);
+      clearSeekForm();
+      renderSeekingCards();
+      showToast('Ride request posted successfully');
+    }
+
+    function requestSeat(driver) {
+      showToast(`Request sent to ${driver} via mChat`);
+    }
+
+    function offerRide(requester) {
+      showToast(`Offer sent to ${requester} via mChat`);
+    }
+
+    function clearOfferForm() {
+      document.getElementById('offerFrom').value = '';
+      document.getElementById('offerDate').value = '';
+      document.getElementById('offerTime').value = '';
+      document.getElementById('offerSeats').value = '';
+    }
+
+    function clearSeekForm() {
+      document.getElementById('seekFrom').value = '';
+      document.getElementById('seekDate').value = '';
+      document.getElementById('seekTime').value = '';
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast success';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3500);
+    }
+
+    function setupTabNavigation() {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+          btn.classList.add('active');
+          document.getElementById(btn.dataset.tab).classList.add('active');
+        });
+      });
+    }
+
+    function setupFilterChips() {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('click', (e) => {
+          if (e.target.classList.contains('chip')) {
+            const isOfferingTab = document.getElementById('offering').classList.contains('active');
+            const chips = e.target.parentElement.querySelectorAll('.chip');
+
+            chips.forEach(c => c.classList.remove('active'));
+            e.target.classList.add('active');
+
+            const filter = e.target.dataset.filter;
+
+            if (isOfferingTab) {
+              activeOfferFilter = filter;
+              renderOfferingCards();
+            } else {
+              activeSeekFilter = filter;
+              renderSeekingCards();
+            }
+          }
+        });
+      });
+
+      document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+          const chips = e.target.parentElement.querySelectorAll('.chip');
+          const isOfferingTab = e.target.closest('#offering') !== null;
+
+          chips.forEach(c => c.classList.remove('active'));
+          e.target.classList.add('active');
+
+          const filter = e.target.dataset.filter;
+
+          if (isOfferingTab) {
+            activeOfferFilter = filter;
+            renderOfferingCards();
+          } else {
+            activeSeekFilter = filter;
+            renderSeekingCards();
+          }
+        });
+      });
+    }
+
+    initializeDemoData();
+    setupTabNavigation();
+    setupFilterChips();
+    renderOfferingCards();
+    renderSeekingCards();
+  </script>
+</body>
+</html>

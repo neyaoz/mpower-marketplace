@@ -53,8 +53,9 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 0 16px;
     }
 
     .header {
@@ -268,6 +269,7 @@
     .cards-container {
       display: grid;
       gap: 16px;
+      grid-template-columns: 1fr;
     }
 
     .card {
@@ -418,6 +420,20 @@
       margin-bottom: 16px;
     }
 
+    @media (min-width: 600px) {
+      .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (min-width: 960px) {
+      .cards-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+    }
+
     @media (max-width: 600px) {
       .form-group.row {
         flex-direction: column;
@@ -429,6 +445,22 @@
 
       .btn-group {
         flex-direction: column;
+      }
+
+      .card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .card-header {
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .card-city-image {
+        width: 100px;
+        height: 100px;
       }
     }
   </style>

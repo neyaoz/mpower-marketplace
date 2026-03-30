@@ -638,7 +638,17 @@
       "Elif Keskin",
       "Ozgur Koyun",
       "Marcus Lippert",
-      "Jan Wunderlich"
+      "Jan Wunderlich",
+      "Lisa Mueller",
+      "Thomas Weber",
+      "Anna Schmidt",
+      "Felix Braun",
+      "Julia Hoffmann",
+      "David Koch",
+      "Lena Fischer",
+      "Markus Wagner",
+      "Sophie Becker",
+      "Tim Hartmann"
     ];
 
     const demoFoundItems = [
@@ -646,7 +656,7 @@
         id: 1,
         title: "Black Umbrella",
         description: "Black compact umbrella, appears to be in good condition",
-        location: "2nd Floor Kitchen",
+        location: "1st Floor Lobby",
         date: "2026-03-28",
         reporter: "Berkay Saribas",
         photo: null,
@@ -654,9 +664,9 @@
       },
       {
         id: 2,
-        title: "AirPods Pro Case",
-        description: "White AirPods Pro case with charging cable, still sealed",
-        location: "Meeting Room A",
+        title: "Bluetooth Earbuds",
+        description: "White wireless earbuds with charging case, still in original packaging",
+        location: "2nd Floor Kitchen",
         date: "2026-03-27",
         reporter: "Elif Keskin",
         photo: null,
@@ -666,9 +676,99 @@
         id: 3,
         title: "Blue Water Bottle",
         description: "Reusable blue water bottle with company logo",
-        location: "Lobby",
+        location: "Conference Room A",
         date: "2026-03-29",
         reporter: "Marcus Lippert",
+        photo: null,
+        valuable: false
+      },
+      {
+        id: 4,
+        title: "USB Flash Drive",
+        description: "Silver USB 3.0 drive, 64GB capacity",
+        location: "3rd Floor Open Space",
+        date: "2026-03-26",
+        reporter: "Lisa Mueller",
+        photo: null,
+        valuable: true
+      },
+      {
+        id: 5,
+        title: "Phone Charger Cable",
+        description: "White USB-C charging cable, approximately 2 meters long",
+        location: "Canteen",
+        date: "2026-03-25",
+        reporter: "Thomas Weber",
+        photo: null,
+        valuable: false
+      },
+      {
+        id: 6,
+        title: "Brown Leather Jacket",
+        description: "Men's brown leather jacket, size M, minimal wear",
+        location: "Conference Room B",
+        date: "2026-03-24",
+        reporter: "Anna Schmidt",
+        photo: null,
+        valuable: true
+      },
+      {
+        id: 7,
+        title: "Reading Glasses",
+        description: "Black-rimmed reading glasses in protective case",
+        location: "Reception",
+        date: "2026-03-30",
+        reporter: "Felix Braun",
+        photo: null,
+        valuable: false
+      },
+      {
+        id: 8,
+        title: "Woolen Scarf",
+        description: "Navy blue woolen scarf with subtle pattern",
+        location: "Parking Garage",
+        date: "2026-03-23",
+        reporter: "Julia Hoffmann",
+        photo: null,
+        valuable: false
+      },
+      {
+        id: 9,
+        title: "Sunglasses",
+        description: "Ray-Ban style sunglasses with UV protection",
+        location: "Rooftop Terrace",
+        date: "2026-03-22",
+        reporter: "David Koch",
+        photo: null,
+        valuable: true
+      },
+      {
+        id: 10,
+        title: "Lunchbox",
+        description: "Metal lunchbox with pasta container inside",
+        location: "Break Room",
+        date: "2026-03-21",
+        reporter: "Lena Fischer",
+        photo: null,
+        valuable: false
+      },
+      {
+        id: 11,
+        title: "Work ID Badge",
+        description: "KOBIL employee ID badge with photo and access code",
+        location: "Elevator Area",
+        date: "2026-03-20",
+        reporter: "Markus Wagner",
+        photo: null,
+        valuable: true
+      },
+      {
+        id: 12,
+        title: "Business Book",
+        description: "Hardcover book about digital transformation, barely used",
+        location: "Mailroom",
+        date: "2026-03-19",
+        reporter: "Sophie Becker",
         photo: null,
         valuable: false
       }
@@ -678,7 +778,7 @@
       {
         id: 101,
         title: "Silver Watch",
-        description: "Silver analog watch, round face, appears to be a luxury brand",
+        description: "Silver analog watch with leather band, round face, appears to be a luxury brand",
         location: "Conference Room B",
         date: "2026-03-26",
         reporter: "Ozgur Koyun",
@@ -688,7 +788,7 @@
         id: 102,
         title: "Car Keys with BMW Keychain",
         description: "Black car keys with silver BMW logo keychain",
-        location: "Office Parking Lot",
+        location: "Parking Garage",
         date: "2026-03-29",
         reporter: "Jan Wunderlich",
         valuable: true
@@ -696,11 +796,74 @@
       {
         id: 103,
         title: "Reading Glasses",
-        description: "Brown tortoiseshell reading glasses in black case",
-        location: "3rd Floor Lounge",
+        description: "Brown tortoiseshell reading glasses in leather case",
+        location: "3rd Floor Open Space",
         date: "2026-03-28",
         reporter: "Necati Ozal",
         valuable: false
+      },
+      {
+        id: 104,
+        title: "Leather Wallet",
+        description: "Brown leather wallet with multiple card slots and coin pocket",
+        location: "1st Floor Lobby",
+        date: "2026-03-27",
+        reporter: "Tim Hartmann",
+        valuable: true
+      },
+      {
+        id: 105,
+        title: "Wireless Headphones",
+        description: "Sony WH-1000XM4 noise-canceling headphones in carrying case",
+        location: "2nd Floor Kitchen",
+        date: "2026-03-25",
+        reporter: "Lisa Mueller",
+        valuable: true
+      },
+      {
+        id: 106,
+        title: "Notebook",
+        description: "Moleskine notebook with leather cover, half-filled with notes",
+        location: "Conference Room A",
+        date: "2026-03-24",
+        reporter: "Thomas Weber",
+        valuable: false
+      },
+      {
+        id: 107,
+        title: "Gold Wedding Ring",
+        description: "18K gold wedding ring with engraved inscription",
+        location: "Gym/Fitness Area",
+        date: "2026-03-23",
+        reporter: "Anna Schmidt",
+        valuable: true
+      },
+      {
+        id: 108,
+        title: "Access Card",
+        description: "White KOBIL access card with photo ID and magnetic stripe",
+        location: "Server Room Hallway",
+        date: "2026-03-22",
+        reporter: "Felix Braun",
+        valuable: true
+      },
+      {
+        id: 109,
+        title: "Stainless Steel Thermos",
+        description: "Silver thermos bottle, capacity 750ml, temperature display",
+        location: "Canteen",
+        date: "2026-03-21",
+        reporter: "Julia Hoffmann",
+        valuable: false
+      },
+      {
+        id: 110,
+        title: "Parking Card",
+        description: "Monthly parking pass for office garage, valid until end of April",
+        location: "Elevator Area",
+        date: "2026-03-15",
+        reporter: "David Koch",
+        valuable: true
       }
     ];
 

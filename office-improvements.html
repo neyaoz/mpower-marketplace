@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Improvements</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3A67EF;
+            --secondary: #48A6CD;
+            --text-primary: #121925;
+            --text-secondary: #4A4E59;
+            --text-tertiary: #777D8C;
+            --background: #F2F5F8;
+            --border: #DCE0E6;
+            --btn-gradient: linear-gradient(135deg, #0014FF, #0012E1);
+            --font-display: "Mona Sans", sans-serif;
+            --font-body: "Geist", sans-serif;
+            --success: #1DAC76;
+            --warning: #F0BE48;
+            --info: #48A6CD;
+            --system-60: #B9C1D1;
+            --system-40: #E2E7F2;
+            --system-30: #EFF2F8;
+            --white: #FFFFFF;
+            --rounded-card: 18px;
+            --rounded-btn: 14px;
+            --rounded-input: 14px;
+            --rounded-badge: 50px;
+            --rounded-modal: 18px;
+            --transition: 300ms ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--background);
+            color: var(--text-primary);
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        button {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--btn-gradient);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: var(--rounded-btn);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            border-radius: var(--rounded-badge);
+            border: 1px solid var(--border);
+            background-color: var(--white);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .filter-chip:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .filter-chip.active {
+            background-color: var(--secondary);
+            color: var(--white);
+            border-color: var(--secondary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--rounded-modal);
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--rounded-input);
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all var(--transition);
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--system-40);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            background-color: var(--white);
+            color: var(--text-primary);
+            border-radius: var(--rounded-btn);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--background);
+            border-color: var(--text-secondary);
+        }
+
+        .btn-primary-full {
+            flex: 1;
+            padding: 10px 16px;
+            background: var(--btn-gradient);
+            color: var(--white);
+            border-radius: var(--rounded-btn);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-primary-full:hover {
+            transform: scale(1.02);
+        }
+
+        .suggestions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .suggestion-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: var(--rounded-card);
+            padding: 20px;
+            transition: all var(--transition);
+            cursor: default;
+        }
+
+        .suggestion-card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--rounded-badge);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-new {
+            background-color: rgba(72, 166, 205, 0.1);
+            color: var(--secondary);
+        }
+
+        .status-under-review {
+            background-color: rgba(240, 190, 72, 0.1);
+            color: var(--warning);
+        }
+
+        .status-approved {
+            background-color: rgba(29, 172, 118, 0.1);
+            color: var(--success);
+        }
+
+        .status-completed {
+            background-color: rgba(185, 193, 209, 0.1);
+            color: var(--system-60);
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .category-tag {
+            display: inline-block;
+            background-color: var(--background);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .cost-estimate {
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .upvote-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            background-color: var(--white);
+            color: var(--text-secondary);
+            border-radius: var(--rounded-btn);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all var(--transition);
+        }
+
+        .upvote-button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background-color: rgba(58, 103, 239, 0.04);
+        }
+
+        .upvote-button.voted {
+            background-color: rgba(58, 103, 239, 0.1);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .vote-count {
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .upvote-icon {
+            font-size: 16px;
+        }
+
+        .submitted-by {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-description {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        @media (max-width: 768px) {
+            .suggestions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+
+            .modal-content {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Office Improvements</h1>
+            <p class="header-subtitle">Share ideas to make our Worms office better. Vote for your favorite suggestions.</p>
+        </header>
+
+        <div class="controls">
+            <button class="btn-primary" onclick="openSubmitModal()">+ Submit Suggestion</button>
+            <div class="category-filters" id="categoryFilters"></div>
+        </div>
+
+        <div class="suggestions-grid" id="suggestionsGrid"></div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-state-title">No suggestions found</div>
+            <div class="empty-state-description">Try adjusting your filters or submit the first suggestion.</div>
+        </div>
+    </div>
+
+    <div id="submitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Submit Improvement Suggestion</span>
+                <button class="modal-close" onclick="closeSubmitModal()">&#x2715;</button>
+            </div>
+            <div class="form-group">
+                <label for="suggestionTitle">Title</label>
+                <input type="text" id="suggestionTitle" placeholder="Brief title for your suggestion" />
+            </div>
+            <div class="form-group">
+                <label for="suggestionDescription">Description</label>
+                <textarea id="suggestionDescription" placeholder="Describe your suggestion in detail..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="suggestionCategory">Category</label>
+                <select id="suggestionCategory">
+                    <option value="">Select a category</option>
+                    <option value="Workspace">Workspace</option>
+                    <option value="Kitchen">Kitchen</option>
+                    <option value="Meeting Rooms">Meeting Rooms</option>
+                    <option value="Common Areas">Common Areas</option>
+                    <option value="IT/Tech">IT/Tech</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="suggestionCost">Estimated Cost (Optional)</label>
+                <input type="number" id="suggestionCost" placeholder="e.g. 200" />
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeSubmitModal()">Cancel</button>
+                <button class="btn-primary-full" onclick="submitSuggestion()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo data
+        let suggestions = [
+            {
+                id: 1,
+                title: "Standing Desk Converters for Hot Desks",
+                description: "Provide adjustable standing desk converters for our hot desking areas to improve ergonomics and employee health.",
+                category: "Workspace",
+                cost: 2400,
+                status: "Approved",
+                votes: 12,
+                submittedBy: "Necati Ozal",
+                userVoted: false
+            },
+            {
+                id: 2,
+                title: "Better Coffee Machine for 2nd Floor",
+                description: "Upgrade the current coffee machine on the 2nd floor with a modern espresso machine that makes better quality coffee.",
+                category: "Kitchen",
+                cost: 800,
+                status: "Under Review",
+                votes: 8,
+                submittedBy: "Berkay Saribas",
+                userVoted: false
+            },
+            {
+                id: 3,
+                title: "Acoustic Panels for Open Office",
+                description: "Install acoustic panels in the open office area to reduce noise levels and improve focus and concentration.",
+                category: "Common Areas",
+                cost: null,
+                status: "New",
+                votes: 5,
+                submittedBy: "Elif Keskin",
+                userVoted: false
+            },
+            {
+                id: 4,
+                title: "Bike Rack with Roof Cover",
+                description: "Install a covered bike rack outside to protect bicycles from weather and encourage cycling commutes.",
+                category: "Common Areas",
+                cost: 500,
+                status: "New",
+                votes: 3,
+                submittedBy: "Ozgur Koyun",
+                userVoted: false
+            },
+            {
+                id: 5,
+                title: "Ergonomic Keyboard Pool",
+                description: "Create a pool of ergonomic keyboards that employees can request and use at their desks.",
+                category: "IT/Tech",
+                cost: null,
+                status: "New",
+                votes: 2,
+                submittedBy: "Marcus Lippert",
+                userVoted: false
+            }
+        ];
+
+        const categories = ["Workspace", "Kitchen", "Meeting Rooms", "Common Areas", "IT/Tech", "Other"];
+        let activeFilter = null;
+
+        function initializeFilters() {
+            const filterContainer = document.getElementById("categoryFilters");
+            filterContainer.innerHTML = "";
+
+            const allChip = document.createElement("button");
+            allChip.className = "filter-chip active";
+            allChip.textContent = "All";
+            allChip.onclick = () => setFilter(null);
+            filterContainer.appendChild(allChip);
+
+            categories.forEach(cat => {
+                const chip = document.createElement("button");
+                chip.className = "filter-chip";
+                chip.textContent = cat;
+                chip.onclick = () => setFilter(cat);
+                filterContainer.appendChild(chip);
+            });
+        }
+
+        function setFilter(category) {
+            activeFilter = category;
+            updateFilterUI();
+            renderSuggestions();
+        }
+
+        function updateFilterUI() {
+            const chips = document.querySelectorAll(".filter-chip");
+            chips.forEach((chip, index) => {
+                const isAll = index === 0;
+                const isActive = (isAll && activeFilter === null) || (chip.textContent === activeFilter);
+                chip.classList.toggle("active", isActive);
+            });
+        }
+
+        function openSubmitModal() {
+            document.getElementById("submitModal").classList.add("active");
+        }
+
+        function closeSubmitModal() {
+            document.getElementById("submitModal").classList.remove("active");
+            document.getElementById("suggestionTitle").value = "";
+            document.getElementById("suggestionDescription").value = "";
+            document.getElementById("suggestionCategory").value = "";
+            document.getElementById("suggestionCost").value = "";
+        }
+
+        function submitSuggestion() {
+            const title = document.getElementById("suggestionTitle").value.trim();
+            const description = document.getElementById("suggestionDescription").value.trim();
+            const category = document.getElementById("suggestionCategory").value;
+            const cost = document.getElementById("suggestionCost").value;
+
+            if (!title || !description || !category) {
+                alert("Please fill in title, description, and category.");
+                return;
+            }
+
+            const newSuggestion = {
+                id: Math.max(...suggestions.map(s => s.id), 0) + 1,
+                title,
+                description,
+                category,
+                cost: cost ? parseInt(cost) : null,
+                status: "New",
+                votes: 0,
+                submittedBy: "You",
+                userVoted: false
+            };
+
+            suggestions.unshift(newSuggestion);
+            renderSuggestions();
+            closeSubmitModal();
+        }
+
+        function toggleUpvote(id) {
+            const suggestion = suggestions.find(s => s.id === id);
+            if (suggestion) {
+                suggestion.userVoted = !suggestion.userVoted;
+                suggestion.votes += suggestion.userVoted ? 1 : -1;
+                renderSuggestions();
+            }
+        }
+
+        function renderSuggestions() {
+            const grid = document.getElementById("suggestionsGrid");
+            const emptyState = document.getElementById("emptyState");
+
+            let filtered = suggestions;
+            if (activeFilter) {
+                filtered = suggestions.filter(s => s.category === activeFilter);
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = "";
+                emptyState.style.display = "block";
+                return;
+            }
+
+            emptyState.style.display = "none";
+
+            const sorted = [...filtered].sort((a, b) => b.votes - a.votes);
+
+            grid.innerHTML = sorted.map(suggestion => `
+                <div class="suggestion-card">
+                    <div class="card-header">
+                        <div class="card-title">${escapeHtml(suggestion.title)}</div>
+                        <div class="status-badge status-${suggestion.status.toLowerCase().replace(/ /g, '-')}">
+                            ${suggestion.status}
+                        </div>
+                    </div>
+                    <p class="card-description">${escapeHtml(suggestion.description)}</p>
+                    <div class="card-meta">
+                        <span class="category-tag">${escapeHtml(suggestion.category)}</span>
+                        ${suggestion.cost ? `<span class="cost-estimate">Est. ~${suggestion.cost} EUR</span>` : ''}
+                        <span class="submitted-by">by ${escapeHtml(suggestion.submittedBy)}</span>
+                    </div>
+                    <div class="card-footer">
+                        <button class="upvote-button ${suggestion.userVoted ? 'voted' : ''}" onclick="toggleUpvote(${suggestion.id})">
+                            <span class="upvote-icon">&#x25B2;</span>
+                            <span class="vote-count">${suggestion.votes}</span>
+                        </button>
+                        ${suggestion.status === "Approved" ? '<span style="font-size: 12px; color: var(--text-tertiary);">Budget via mSign</span>' : ''}
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Initialize
+        initializeFilters();
+        renderSuggestions();
+    </script>
+</body>
+</html>

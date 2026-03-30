@@ -476,14 +476,35 @@
             "Elif Keskin",
             "Ozgur Koyun",
             "Marcus Lippert",
-            "Jan Wunderlich"
+            "Jan Wunderlich",
+            "Lisa Mueller",
+            "Thomas Weber",
+            "Anna Schmidt",
+            "Felix Braun",
+            "Julia Hoffmann",
+            "David Koch",
+            "Lena Fischer",
+            "Markus Wagner",
+            "Sophie Becker",
+            "Tim Hartmann"
         ];
 
         const DEMO_RESTAURANTS = [
             "Pizzeria Da Luigi",
             "Asia Wok Express",
             "Burger House Worms",
-            "Mensa KOBIL"
+            "Mensa KOBIL",
+            "Gasthof zum Adler",
+            "Doner Kebab Istanbul",
+            "Sushi Garden Worms",
+            "El Taco Loco",
+            "Cafe Mittendrin",
+            "Backstube Muller",
+            "Thai Orchid",
+            "Curry Express",
+            "Griechisches Restaurant Olympia",
+            "Indian Palace",
+            "Bistro Rheinterrasse"
         ];
 
         let lunchPlans = [];
@@ -519,6 +540,17 @@
             }
 
             loadDemoData() {
+                const today = new Date(window.todayString);
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const tomorrowStr = tomorrow.toISOString().split('T')[0];
+                const wednesday = new Date(today);
+                wednesday.setDate(wednesday.getDate() + 2);
+                const wednesdayStr = wednesday.toISOString().split('T')[0];
+                const thursday = new Date(today);
+                thursday.setDate(thursday.getDate() + 3);
+                const thursdayStr = thursday.toISOString().split('T')[0];
+
                 lunchPlans = [
                     {
                         id: 1,
@@ -527,7 +559,7 @@
                         time: "12:00",
                         maxSeats: 5,
                         organizer: "Necati Ozal",
-                        participants: ["Necati Ozal", "Berkay Saribas"],
+                        participants: ["Necati Ozal", "Berkay Saribas", "Lisa Mueller"],
                         joined: false
                     },
                     {
@@ -537,7 +569,7 @@
                         time: "12:30",
                         maxSeats: 4,
                         organizer: "Elif Keskin",
-                        participants: ["Elif Keskin", "Ozgur Koyun", "Marcus Lippert"],
+                        participants: ["Elif Keskin", "Ozgur Koyun", "Marcus Lippert", "Thomas Weber"],
                         joined: false
                     },
                     {
@@ -547,16 +579,197 @@
                         time: "11:30",
                         maxSeats: 6,
                         organizer: "Jan Wunderlich",
-                        participants: ["Jan Wunderlich"],
+                        participants: ["Jan Wunderlich", "Anna Schmidt", "Felix Braun"],
+                        joined: false
+                    },
+                    {
+                        id: 4,
+                        restaurant: "Mensa KOBIL",
+                        date: window.todayString,
+                        time: "12:15",
+                        maxSeats: 8,
+                        organizer: "Julia Hoffmann",
+                        participants: ["Julia Hoffmann", "David Koch", "Lena Fischer", "Markus Wagner", "Sophie Becker", "Tim Hartmann"],
+                        joined: false
+                    },
+                    {
+                        id: 5,
+                        restaurant: "Gasthof zum Adler",
+                        date: window.todayString,
+                        time: "12:00",
+                        maxSeats: 3,
+                        organizer: "Marcus Lippert",
+                        participants: ["Marcus Lippert", "Lisa Mueller"],
+                        joined: false
+                    },
+                    {
+                        id: 6,
+                        restaurant: "Sushi Garden Worms",
+                        date: tomorrowStr,
+                        time: "12:30",
+                        maxSeats: 5,
+                        organizer: "Anna Schmidt",
+                        participants: ["Anna Schmidt", "Felix Braun", "Julia Hoffmann"],
+                        joined: false
+                    },
+                    {
+                        id: 7,
+                        restaurant: "Doner Kebab Istanbul",
+                        date: tomorrowStr,
+                        time: "12:00",
+                        maxSeats: 4,
+                        organizer: "Berkay Saribas",
+                        participants: ["Berkay Saribas", "Elif Keskin"],
+                        joined: false
+                    },
+                    {
+                        id: 8,
+                        restaurant: "Thai Orchid",
+                        date: tomorrowStr,
+                        time: "13:00",
+                        maxSeats: 6,
+                        organizer: "David Koch",
+                        participants: ["David Koch", "Lena Fischer", "Markus Wagner", "Sophie Becker"],
+                        joined: false
+                    },
+                    {
+                        id: 9,
+                        restaurant: "El Taco Loco",
+                        date: tomorrowStr,
+                        time: "12:15",
+                        maxSeats: 5,
+                        organizer: "Jan Wunderlich",
+                        participants: ["Jan Wunderlich", "Thomas Weber", "Tim Hartmann"],
+                        joined: false
+                    },
+                    {
+                        id: 10,
+                        restaurant: "Cafe Mittendrin",
+                        date: tomorrowStr,
+                        time: "11:30",
+                        maxSeats: 3,
+                        organizer: "Necati Ozal",
+                        participants: ["Necati Ozal"],
+                        joined: false
+                    },
+                    {
+                        id: 11,
+                        restaurant: "Curry Express",
+                        date: wednesdayStr,
+                        time: "12:00",
+                        maxSeats: 7,
+                        organizer: "Ozgur Koyun",
+                        participants: ["Ozgur Koyun", "Marcus Lippert", "Lisa Mueller", "Thomas Weber", "Anna Schmidt", "Felix Braun", "Julia Hoffmann"],
+                        joined: false
+                    },
+                    {
+                        id: 12,
+                        restaurant: "Backstube Muller",
+                        date: wednesdayStr,
+                        time: "12:30",
+                        maxSeats: 4,
+                        organizer: "Elif Keskin",
+                        participants: ["Elif Keskin", "David Koch"],
+                        joined: false
+                    },
+                    {
+                        id: 13,
+                        restaurant: "Griechisches Restaurant Olympia",
+                        date: wednesdayStr,
+                        time: "12:15",
+                        maxSeats: 8,
+                        organizer: "Lena Fischer",
+                        participants: ["Lena Fischer", "Markus Wagner", "Sophie Becker", "Tim Hartmann", "Berkay Saribas"],
+                        joined: false
+                    },
+                    {
+                        id: 14,
+                        restaurant: "Pizzeria Da Luigi",
+                        date: thursdayStr,
+                        time: "12:00",
+                        maxSeats: 6,
+                        organizer: "Felix Braun",
+                        participants: ["Felix Braun", "Julia Hoffmann", "David Koch", "Lena Fischer"],
+                        joined: false
+                    },
+                    {
+                        id: 15,
+                        restaurant: "Indian Palace",
+                        date: thursdayStr,
+                        time: "12:30",
+                        maxSeats: 5,
+                        organizer: "Necati Ozal",
+                        participants: ["Necati Ozal", "Berkay Saribas", "Elif Keskin", "Ozgur Koyun"],
+                        joined: false
+                    },
+                    {
+                        id: 16,
+                        restaurant: "Bistro Rheinterrasse",
+                        date: thursdayStr,
+                        time: "13:00",
+                        maxSeats: 4,
+                        organizer: "Sophie Becker",
+                        participants: ["Sophie Becker", "Tim Hartmann"],
+                        joined: false
+                    },
+                    {
+                        id: 17,
+                        restaurant: "Burger House Worms",
+                        date: thursdayStr,
+                        time: "12:15",
+                        maxSeats: 3,
+                        organizer: "Thomas Weber",
+                        participants: ["Thomas Weber", "Anna Schmidt"],
+                        joined: false
+                    },
+                    {
+                        id: 18,
+                        restaurant: "Asia Wok Express",
+                        date: thursdayStr,
+                        time: "11:30",
+                        maxSeats: 5,
+                        organizer: "Marcus Lippert",
+                        participants: ["Marcus Lippert", "Lisa Mueller", "Jan Wunderlich"],
+                        joined: false
+                    },
+                    {
+                        id: 19,
+                        restaurant: "Mensa KOBIL",
+                        date: tomorrowStr,
+                        time: "12:45",
+                        maxSeats: 8,
+                        organizer: "Markus Wagner",
+                        participants: ["Markus Wagner", "Sophie Becker", "Tim Hartmann", "Necati Ozal", "Berkay Saribas", "Elif Keskin", "Ozgur Koyun"],
+                        joined: false
+                    },
+                    {
+                        id: 20,
+                        restaurant: "Sushi Garden Worms",
+                        date: wednesdayStr,
+                        time: "12:45",
+                        maxSeats: 6,
+                        organizer: "Lisa Mueller",
+                        participants: ["Lisa Mueller", "Thomas Weber", "Jan Wunderlich"],
                         joined: false
                     }
                 ];
 
                 pollVotes = {
-                    "Pizzeria Da Luigi": 12,
-                    "Asia Wok Express": 8,
-                    "Burger House Worms": 15,
-                    "Mensa KOBIL": 5
+                    "Pizzeria Da Luigi": 18,
+                    "Asia Wok Express": 14,
+                    "Burger House Worms": 22,
+                    "Mensa KOBIL": 11,
+                    "Gasthof zum Adler": 7,
+                    "Doner Kebab Istanbul": 9,
+                    "Sushi Garden Worms": 16,
+                    "El Taco Loco": 6,
+                    "Cafe Mittendrin": 8,
+                    "Backstube Muller": 10,
+                    "Thai Orchid": 13,
+                    "Curry Express": 15,
+                    "Griechisches Restaurant Olympia": 12,
+                    "Indian Palace": 9,
+                    "Bistro Rheinterrasse": 5
                 };
             }
 

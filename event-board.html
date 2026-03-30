@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Board - KOBIL mPower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #3A67EF;
+      --secondary: #48A6CD;
+      --text-primary: #121925;
+      --text-secondary: #4A4E59;
+      --text-tertiary: #777D8C;
+      --background: #F2F5F8;
+      --border: #DCE0E6;
+      --btn-gradient: linear-gradient(135deg, #0014FF, #0012E1);
+      --font-display: "Mona Sans", sans-serif;
+      --font-body: "Geist Sans", "Geist", sans-serif;
+      --success: #1DAC76;
+      --warning: #F0BE48;
+      --system-60: #B9C1D1;
+      --system-40: #E2E7F2;
+      --system-30: #EFF2F8;
+      --white: #FFFFFF;
+      --rounded-card: 18px;
+      --rounded-btn: 14px;
+      --rounded-input: 14px;
+      --rounded-badge: 50px;
+      --rounded-modal: 18px;
+      --transition: 300ms ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--background);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background-color: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      margin-bottom: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: var(--rounded-btn);
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font-body);
+    }
+
+    .btn-primary {
+      background: var(--btn-gradient);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 20, 255, 0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background-color: var(--system-30);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--system-40);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .controls {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 8px 16px;
+      border-radius: var(--rounded-badge);
+      border: 1px solid var(--border);
+      background-color: var(--white);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background-color: var(--system-30);
+    }
+
+    .chip.active {
+      background: var(--btn-gradient);
+      color: var(--white);
+      border-color: transparent;
+    }
+
+    .status-filter {
+      display: flex;
+      gap: 8px;
+    }
+
+    .status-chip {
+      padding: 8px 16px;
+      border-radius: var(--rounded-badge);
+      border: 1px solid var(--border);
+      background-color: var(--white);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .status-chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background-color: var(--system-30);
+    }
+
+    .status-chip.active {
+      background-color: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .event-card {
+      background-color: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-card);
+      overflow: hidden;
+      transition: all var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .event-card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 8px 24px rgba(58, 103, 239, 0.12);
+    }
+
+    .event-card-header {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      background-color: var(--system-30);
+    }
+
+    .event-date-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--btn-gradient);
+      color: var(--white);
+      padding: 12px 16px;
+      border-radius: 12px;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .event-date-block-day {
+      font-size: 12px;
+      font-weight: 500;
+      opacity: 0.9;
+      text-transform: uppercase;
+    }
+
+    .event-date-block-date {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .event-date-block-time {
+      font-size: 11px;
+      font-weight: 500;
+      margin-top: 2px;
+      opacity: 0.85;
+    }
+
+    .event-header-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .event-category {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 4px 10px;
+      background-color: var(--secondary);
+      color: var(--white);
+      border-radius: var(--rounded-badge);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .event-status {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 4px 10px;
+      border-radius: var(--rounded-badge);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .event-status.upcoming {
+      background-color: var(--system-40);
+      color: var(--primary);
+    }
+
+    .event-status.full {
+      background-color: #FEE7E7;
+      color: #DC3545;
+    }
+
+    .event-status.past {
+      background-color: var(--system-40);
+      color: var(--text-tertiary);
+    }
+
+    .event-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .event-location {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .event-content {
+      padding: 16px;
+      flex: 1;
+    }
+
+    .event-description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .event-attendees {
+      margin-bottom: 16px;
+    }
+
+    .event-attendees-label {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .participant-bar {
+      width: 100%;
+      height: 6px;
+      background-color: var(--system-40);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .participant-fill {
+      height: 100%;
+      background: var(--btn-gradient);
+      transition: width var(--transition);
+    }
+
+    .participant-count {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-top: 6px;
+    }
+
+    .event-attendees-list {
+      margin-top: 8px;
+    }
+
+    .attendee-avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--system-40);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    .event-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-join {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: var(--rounded-btn);
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font-body);
+      background: var(--btn-gradient);
+      color: var(--white);
+    }
+
+    .btn-join:hover:not(:disabled) {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 20, 255, 0.3);
+    }
+
+    .btn-join:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-share {
+      padding: 10px 16px;
+      border-radius: var(--rounded-btn);
+      background-color: var(--system-30);
+      color: var(--text-primary);
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: var(--font-body);
+    }
+
+    .btn-share:hover {
+      background-color: var(--system-40);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(18, 25, 37, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background-color: var(--white);
+      border-radius: var(--rounded-modal);
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(18, 25, 37, 0.3);
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 8px;
+      line-height: 1;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-input);
+      font-size: 14px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      transition: all var(--transition);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(58, 103, 239, 0.1);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .empty-state-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .empty-state-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background-color: var(--text-primary);
+      color: var(--white);
+      padding: 16px 24px;
+      border-radius: var(--rounded-btn);
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 2000;
+      animation: slideIn 300ms ease forwards;
+    }
+
+    .toast.success {
+      background-color: var(--success);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .poll-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .poll-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .poll-option {
+      margin-bottom: 8px;
+    }
+
+    .poll-option-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .poll-bar {
+      width: 100%;
+      height: 6px;
+      background-color: var(--system-40);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .poll-fill {
+      height: 100%;
+      background-color: var(--secondary);
+      transition: width var(--transition);
+    }
+
+    @media (max-width: 768px) {
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-chips {
+        justify-content: flex-start;
+      }
+
+      .modal-content {
+        max-width: 90%;
+        padding: 24px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1 class="header-title">Event Board</h1>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="openCreateModal()">+ Create Event</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="controls">
+      <div class="filter-chips" id="categoryFilters"></div>
+      <div class="status-filter" id="statusFilters"></div>
+    </div>
+
+    <div class="events-grid" id="eventsGrid"></div>
+    <div class="empty-state" id="emptyState" style="display: none;">
+      <div class="empty-state-icon">calendar</div>
+      <div class="empty-state-title">No events found</div>
+      <div class="empty-state-text">Create an event or adjust your filters to see upcoming activities.</div>
+    </div>
+  </div>
+
+  <!-- Create Event Modal -->
+  <div class="modal" id="createModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeCreateModal()">x</button>
+      <div class="modal-header">Create New Event</div>
+
+      <form id="createEventForm" onsubmit="handleCreateEvent(event)">
+        <div class="form-group">
+          <label class="form-label">Event Title</label>
+          <input type="text" class="form-input" id="eventTitle" required placeholder="e.g. Board Game Night">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="eventDescription" placeholder="What's this event about?"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="eventCategory" required>
+            <option value="">Select a category</option>
+            <option value="After-Work">After-Work</option>
+            <option value="Sports">Sports</option>
+            <option value="Team Building">Team Building</option>
+            <option value="Culture">Culture</option>
+            <option value="Learning">Learning</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-input" id="eventDate" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Time</label>
+            <input type="time" class="form-input" id="eventTime" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input type="text" class="form-input" id="eventLocation" placeholder="Where will it be?">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Max Participants</label>
+          <input type="number" class="form-input" id="eventMaxParticipants" min="1" value="20">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Event Details Modal -->
+  <div class="modal" id="detailsModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeDetailsModal()">x</button>
+      <div id="detailsContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Demo data
+    const demoEvents = [
+      {
+        id: 1,
+        title: "Friday After-Work Drinks",
+        description: "Join us for drinks and conversation at the wine bar. Great way to unwind after the week!",
+        category: "After-Work",
+        date: "2026-04-04",
+        time: "18:00",
+        location: "Weinstube am Dom",
+        maxParticipants: 20,
+        participants: ["Necati Ozal", "Berkay Saribas", "Elif Keskin", "Ozgur Koyun", "Marcus Lippert", "Jan Wunderlich", "Sarah", "Hakan"],
+        organizer: "Necati Ozal",
+        pollQuestion: "Which bar location works best?",
+        pollOptions: {
+          "Weinstube am Dom": 8,
+          "Zur Baumschule": 4,
+          "Eichenschenke": 2
+        }
+      },
+      {
+        id: 2,
+        title: "Board Game Night",
+        description: "Bring your favorite games and join us for an evening of fun, strategy, and laughter.",
+        category: "Team Building",
+        date: "2026-04-08",
+        time: "19:00",
+        location: "KOBIL Lounge",
+        maxParticipants: 10,
+        participants: ["Elif Keskin", "Jan Wunderlich", "Marcus Lippert", "Ozgur Koyun"],
+        organizer: "Elif Keskin",
+        pollQuestion: null,
+        pollOptions: {}
+      },
+      {
+        id: 3,
+        title: "Running Group",
+        description: "Weekly running session for all fitness levels. We run along the Rhein Promenade at a relaxed pace.",
+        category: "Sports",
+        date: "2026-03-26",
+        time: "17:30",
+        location: "Rhein Promenade",
+        maxParticipants: 8,
+        participants: ["Berkay Saribas", "Marcus Lippert", "Ozgur Koyun"],
+        organizer: "Berkay Saribas",
+        pollQuestion: null,
+        pollOptions: {},
+        recurring: "every Wednesday"
+      },
+      {
+        id: 4,
+        title: "Tech Talk: Flutter Best Practices",
+        description: "Learn advanced Flutter patterns and best practices from industry experts. Perfect for developers at any level.",
+        category: "Learning",
+        date: "2026-04-10",
+        time: "16:00",
+        location: "Meeting Room A",
+        maxParticipants: 25,
+        participants: ["Marcus Lippert", "Jan Wunderlich", "Necati Ozal", "Ozgur Koyun", "Hakan", "Sarah", "Berkay Saribas", "Elif Keskin", "Silva", "Raphael", "Tobias", "Dominik"],
+        organizer: "Marcus Lippert",
+        pollQuestion: "What topics should we cover?",
+        pollOptions: {
+          "State Management": 7,
+          "Performance Optimization": 5,
+          "Testing Strategies": 3
+        }
+      }
+    ];
+
+    const allCategories = ["After-Work", "Sports", "Team Building", "Culture", "Learning", "Other"];
+    const allStatuses = ["Upcoming", "Full", "Past"];
+    let events = [...demoEvents];
+    let selectedCategories = [];
+    let selectedStatuses = [];
+    let currentUser = "Sarah"; // Current logged-in user
+
+    function getEventStatus(event) {
+      const eventDate = new Date(event.date + " " + event.time);
+      const now = new Date();
+
+      if (eventDate < now) return "Past";
+      if (event.participants.length >= event.maxParticipants) return "Full";
+      return "Upcoming";
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr + "T00:00:00");
+      const day = date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+      const dayNum = date.getDate();
+      return { day, dayNum };
+    }
+
+    function initFilters() {
+      const categoryContainer = document.getElementById('categoryFilters');
+      allCategories.forEach(cat => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'chip';
+        chip.textContent = cat;
+        chip.onclick = () => toggleCategory(cat);
+        categoryContainer.appendChild(chip);
+      });
+
+      const statusContainer = document.getElementById('statusFilters');
+      allStatuses.forEach(status => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'status-chip';
+        chip.textContent = status;
+        chip.onclick = () => toggleStatus(status);
+        statusContainer.appendChild(chip);
+      });
+    }
+
+    function toggleCategory(category) {
+      const idx = selectedCategories.indexOf(category);
+      if (idx > -1) {
+        selectedCategories.splice(idx, 1);
+      } else {
+        selectedCategories.push(category);
+      }
+      updateFilters();
+    }
+
+    function toggleStatus(status) {
+      const idx = selectedStatuses.indexOf(status);
+      if (idx > -1) {
+        selectedStatuses.splice(idx, 1);
+      } else {
+        selectedStatuses.push(status);
+      }
+      updateFilters();
+    }
+
+    function updateFilters() {
+      // Update chip styles
+      document.querySelectorAll('.chip').forEach(chip => {
+        const text = chip.textContent;
+        if (selectedCategories.includes(text)) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+
+      document.querySelectorAll('.status-chip').forEach(chip => {
+        const text = chip.textContent;
+        if (selectedStatuses.includes(text)) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+
+      renderEvents();
+    }
+
+    function filterEvents() {
+      return events.filter(event => {
+        const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(event.category);
+        const status = getEventStatus(event);
+        const statusMatch = selectedStatuses.length === 0 || selectedStatuses.includes(status);
+        return categoryMatch && statusMatch;
+      });
+    }
+
+    function renderEvents() {
+      const grid = document.getElementById('eventsGrid');
+      const emptyState = document.getElementById('emptyState');
+      const filtered = filterEvents();
+
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      filtered.forEach(event => {
+        const status = getEventStatus(event);
+        const { day, dayNum } = formatDate(event.date);
+        const participantPercent = (event.participants.length / event.maxParticipants) * 100;
+        const isFull = event.participants.length >= event.maxParticipants;
+        const isJoined = event.participants.includes(currentUser);
+
+        const card = document.createElement('div');
+        card.className = 'event-card';
+
+        let attendeeAvatars = event.participants.slice(0, 4).map(name => {
+          const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+          return `<div class="attendee-avatar" title="${name}">${initials}</div>`;
+        }).join('');
+
+        if (event.participants.length > 4) {
+          attendeeAvatars += `<div class="attendee-avatar" title="+${event.participants.length - 4} more">+${event.participants.length - 4}</div>`;
+        }
+
+        let pollHTML = '';
+        if (event.pollQuestion && event.pollOptions) {
+          const totalVotes = Object.values(event.pollOptions).reduce((a, b) => a + b, 0);
+          pollHTML = `
+            <div class="poll-section">
+              <div class="poll-title">${event.pollQuestion}</div>
+              ${Object.entries(event.pollOptions).map(([option, votes]) => {
+                const percent = totalVotes > 0 ? (votes / totalVotes * 100) : 0;
+                return `
+                  <div class="poll-option">
+                    <div class="poll-option-label">
+                      <span>${option}</span>
+                      <span>${votes}</span>
+                    </div>
+                    <div class="poll-bar">
+                      <div class="poll-fill" style="width: ${percent}%"></div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="event-card-header">
+            <div class="event-date-block">
+              <div class="event-date-block-day">${day}</div>
+              <div class="event-date-block-date">${dayNum}</div>
+              <div class="event-date-block-time">${event.time}</div>
+            </div>
+            <div class="event-header-info">
+              <div class="event-category">${event.category}</div>
+              <div class="event-status ${status.toLowerCase()}">${status}</div>
+            </div>
+          </div>
+
+          <div class="event-content">
+            <h3 class="event-title">${event.title}</h3>
+            ${event.recurring ? `<div class="event-location">repeats ${event.recurring}</div>` : ''}
+            <div class="event-location">location: ${event.location}</div>
+            <p class="event-description">${event.description}</p>
+
+            <div class="event-attendees">
+              <div class="event-attendees-label">Attendees (${event.participants.length}/${event.maxParticipants})</div>
+              <div class="participant-bar">
+                <div class="participant-fill" style="width: ${participantPercent}%"></div>
+              </div>
+              <div class="participant-count">${event.participants.length} of ${event.maxParticipants} going</div>
+              <div class="event-attendees-list">${attendeeAvatars}</div>
+            </div>
+
+            ${pollHTML}
+          </div>
+
+          <div class="event-footer">
+            <button class="btn-join" ${isFull && !isJoined ? 'disabled' : ''} onclick="handleJoinEvent(${event.id})">
+              ${isJoined ? 'Joined' : isFull ? 'Full' : 'Join Event'}
+            </button>
+            <button class="btn-share" onclick="handleShare(${event.id}, '${event.title}')">Share</button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function handleJoinEvent(eventId) {
+      const event = events.find(e => e.id === eventId);
+      if (!event) return;
+
+      if (event.participants.includes(currentUser)) {
+        event.participants = event.participants.filter(p => p !== currentUser);
+        showToast('You left the event');
+      } else if (event.participants.length < event.maxParticipants) {
+        event.participants.push(currentUser);
+        showToast('Confirmation sent to ' + event.organizer + ' via mChat');
+      }
+      renderEvents();
+    }
+
+    function handleShare(eventId, title) {
+      showToast('Event shared: ' + title);
+    }
+
+    function openCreateModal() {
+      document.getElementById('createModal').classList.add('active');
+    }
+
+    function closeCreateModal() {
+      document.getElementById('createModal').classList.remove('active');
+      document.getElementById('createEventForm').reset();
+    }
+
+    function closeDetailsModal() {
+      document.getElementById('detailsModal').classList.remove('active');
+    }
+
+    function handleCreateEvent(e) {
+      e.preventDefault();
+
+      const title = document.getElementById('eventTitle').value;
+      const description = document.getElementById('eventDescription').value;
+      const category = document.getElementById('eventCategory').value;
+      const date = document.getElementById('eventDate').value;
+      const time = document.getElementById('eventTime').value;
+      const location = document.getElementById('eventLocation').value;
+      const maxParticipants = parseInt(document.getElementById('eventMaxParticipants').value) || 20;
+
+      const newEvent = {
+        id: Math.max(...events.map(e => e.id), 0) + 1,
+        title,
+        description,
+        category,
+        date,
+        time,
+        location,
+        maxParticipants,
+        participants: [currentUser],
+        organizer: currentUser,
+        pollQuestion: null,
+        pollOptions: {}
+      };
+
+      events.push(newEvent);
+      closeCreateModal();
+      showToast('Event created successfully!');
+      renderEvents();
+    }
+
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast success';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      initFilters();
+      renderEvents();
+    });
+
+    // Close modals on backdrop click
+    document.getElementById('createModal').addEventListener('click', (e) => {
+      if (e.target.id === 'createModal') closeCreateModal();
+    });
+
+    document.getElementById('detailsModal').addEventListener('click', (e) => {
+      if (e.target.id === 'detailsModal') closeDetailsModal();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOBIL Marketplace</title>
+<!-- Fonts: Mona Sans (display/headings) + Geist (body/UI) per MiniApp Design Guideline v7.0 Section 5.1 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/700.css">
+<style>
+  /* ============================================================
+     MiniApp Design Guidelines v7.0 - CSS Token Reference (Sec 16)
+     ============================================================ */
+  :root {
+    /* === mPower Product Tokens (primary for MiniApp UI) === */
+
+    /* Colors (Sec 4.1) */
+    --primary: #3A67EF;
+    --secondary: #48A6CD;
+    --text-primary: #121925;
+    --text-secondary: #4A4E59;
+    --text-tertiary: #777D8C;
+    --background: #F2F5F8;
+    --border: #DCE0E6;
+    --dark-section: #0F0E13;
+
+    /* Button (Sec 7.1) */
+    --btn-gradient: linear-gradient(135deg, #0014FF, #0012E1);
+    --btn-radius: 14px;
+
+    /* Badge (Sec 7.3) */
+    --badge-color: #48A6CD;
+    --badge-bg: rgba(72, 166, 205, 0.1);
+    --badge-border: rgba(72, 166, 205, 0.15);
+
+    /* Typography (Sec 5.1) */
+    --font-display: "Mona Sans", sans-serif;
+    --font-body: "Geist Sans", "Geist", "Geist Fallback", sans-serif;
+
+    /* Feedback / Status (Sec 4.3) */
+    --success: #1DAC76;
+    --error: #E53E3E;
+    --warning: #F0BE48;
+    --info: #48A6CD;
+
+    /* Neutral Scale (Sec 4.4) - navy-tinted, NOT pure gray */
+    --system-60: #B9C1D1;
+    --system-40: #E2E7F2;
+    --system-30: #EFF2F8;
+    --white: #FFFFFF;
+
+    /* Shade / Pastel (Sec 4.5) */
+    --shade-green: #D7E0C9;
+    --shade-yellow: #F3DDA9;
+
+    /* Border Radius (Sec 12) */
+    --rounded-card: 18px;
+    --rounded-btn: 14px;
+    --rounded-input: 14px;
+    --rounded-badge: 50px;
+    --rounded-modal: 18px;
+
+    /* Spacing (Sec 6) - mobile prefix */
+    --m4: 4px;
+    --m8: 8px;
+    --m12: 12px;
+    --m16: 16px;
+    --m20: 20px;
+    --m24: 24px;
+    --m32: 32px;
+    --m40: 40px;
+
+    /* Interaction (Sec 10) */
+    --transition: 300ms ease;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--background);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Focus Ring - Sec 14.4: 2px solid #3A67EF, 2px offset */
+  *:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* ============================================================
+     Header
+     ============================================================ */
+  .header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: var(--m16) var(--m20);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--m16);
+  }
+
+  /* Heading 2: 24px mobile, Mona Sans 600 - Sec 5.2 */
+  .header h1 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Primary Button: gradient, Geist bold, 14px radius, padding 14px/24px - Sec 7.1 */
+  .btn-primary {
+    background: var(--btn-gradient);
+    color: var(--white);
+    border: none;
+    padding: 14px 24px;
+    border-radius: var(--rounded-btn);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--m8);
+    transition: filter var(--transition);
+    min-height: 48px; /* Sec 14.2: touch target */
+  }
+
+  .btn-primary:hover { filter: brightness(1.08); }
+
+  /* Secondary Button: Sec 7.1 */
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 14px 24px;
+    border-radius: var(--rounded-btn);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transition);
+    min-height: 48px;
+  }
+
+  .btn-secondary:hover { background: var(--system-30); }
+
+  /* ============================================================
+     Tabs
+     ============================================================ */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--system-30);
+    padding: var(--m4);
+    border-radius: var(--rounded-btn);
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px var(--m12);
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    border-radius: calc(var(--rounded-btn) - 4px);
+    transition: all var(--transition);
+    text-align: center;
+    min-height: 44px; /* Sec 14.2 */
+  }
+
+  .tab.active {
+    background: var(--white);
+    color: var(--text-primary);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(18, 25, 37, 0.06);
+  }
+
+  .tab .count {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: var(--rounded-badge);
+    margin-left: var(--m4);
+    background: var(--system-40);
+    color: var(--text-tertiary);
+  }
+
+  .tab.active .count {
+    background: var(--primary);
+    color: var(--white);
+  }
+
+  /* ============================================================
+     Search - Sec 7.4 Form Inputs
+     ============================================================ */
+  .search-bar {
+    padding: var(--m12) var(--m20);
+  }
+
+  .search-bar input {
+    width: 100%;
+    padding: 10px var(--m16) 10px 42px;
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-input);
+    font-family: var(--font-body);
+    font-size: 14px; /* Sec 14.3: min 14px body */
+    color: var(--text-primary);
+    background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23777D8C' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cpath d='m21 21-4.35-4.35'%3E%3C/path%3E%3C/svg%3E") no-repeat 14px center;
+    outline: none;
+    transition: border-color var(--transition);
+  }
+
+  .search-bar input::placeholder { color: var(--text-tertiary); }
+  .search-bar input:focus { border-color: var(--primary); }
+
+  /* ============================================================
+     Filter chips
+     ============================================================ */
+  .filter-bar {
+    padding: 0 var(--m20) var(--m12);
+    display: flex;
+    gap: var(--m8);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-chip {
+    padding: var(--m8) var(--m16);
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-badge);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--white);
+    color: var(--text-secondary);
+    transition: all var(--transition);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-height: 36px;
+  }
+
+  .filter-chip.active {
+    background: var(--text-primary);
+    color: var(--white);
+    border-color: var(--text-primary);
+  }
+
+  /* ============================================================
+     Cards - Sec 7.2
+     Border Radius: 18px, Border: 1px solid #DCE0E6
+     Padding: m24 H / m40 V on mobile
+     Shadow: none default, subtle on interactive/elevated
+     ============================================================ */
+  .listings {
+    padding: 0 var(--m20) 100px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--m12);
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: var(--rounded-card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+
+  /* Sec 10: Card Hover = subtle scale(1.01-1.02) or shadow elevation */
+  .card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(18, 25, 37, 0.08);
+  }
+
+  .card-body {
+    display: flex;
+    gap: var(--m16);
+    padding: var(--m20);
+  }
+
+  .card-img {
+    width: 88px;
+    height: 88px;
+    border-radius: var(--rounded-card); /* Sec 11: match parent card */
+    background: var(--system-30);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--system-60);
+  }
+
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--m8);
+    margin-bottom: var(--m4);
+  }
+
+  /* Subheading: 16px mobile, Geist 600 - Sec 5.2 */
+  .card-info h3 {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Body: 14px, Geist 400, #4A4E59 - Sec 5.2 */
+  .card-info p {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: var(--m8);
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Heading 3: 20px, Geist 600 - Sec 5.2 */
+  .price {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  /* Body Small: 12px, Geist 400, #777D8C */
+  .price.wanted {
+    color: var(--text-tertiary);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Badge: Sec 7.3 - pill, #48A6CD text, 10% bg, 1.5px border at 15% */
+  .badge {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    padding: var(--m4) var(--m12);
+    border-radius: var(--rounded-badge);
+    color: var(--badge-color);
+    background: var(--badge-bg);
+    border: 1.5px solid var(--badge-border);
+    white-space: nowrap;
+  }
+
+  .badge-sale {
+    color: var(--success);
+    background: rgba(29, 172, 118, 0.1);
+    border-color: rgba(29, 172, 118, 0.15);
+  }
+
+  .badge-wanted {
+    color: #B45309;
+    background: rgba(240, 190, 72, 0.1);
+    border-color: rgba(240, 190, 72, 0.15);
+  }
+
+  /* Body Small for seller name */
+  .card-seller {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-tertiary);
+  }
+
+  .card-actions {
+    padding: 0 var(--m20) var(--m20);
+  }
+
+  .btn-offer {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--rounded-btn);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter var(--transition);
+    min-height: 48px; /* Sec 14.2 */
+  }
+
+  .btn-offer-sale {
+    background: var(--btn-gradient);
+    color: var(--white);
+  }
+
+  .btn-offer-sale:hover { filter: brightness(1.08); }
+
+  .btn-offer-wanted {
+    background: rgba(240, 190, 72, 0.1);
+    color: #92400E;
+    border: 1.5px solid rgba(240, 190, 72, 0.15);
+  }
+
+  .btn-offer-wanted:hover { background: rgba(240, 190, 72, 0.2); }
+
+  /* ============================================================
+     Empty state
+     ============================================================ */
+  .empty-state {
+    text-align: center;
+    padding: var(--m40) var(--m20);
+    color: var(--text-tertiary);
+  }
+
+  /* Sec 8: Icons outlined, 1.25px stroke, round caps */
+  .empty-state svg {
+    width: 56px;
+    height: 56px;
+    margin-bottom: var(--m16);
+    stroke: var(--system-60);
+    stroke-width: 1.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .empty-state h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--m4);
+  }
+
+  .empty-state p { font-size: 14px; }
+
+  /* ============================================================
+     Modal - Sec 13.3: dim bg, 18-24px radius, matching card style
+     ============================================================ */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 14, 19, 0.45);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border-radius: var(--rounded-modal) var(--rounded-modal) 0 0;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: var(--m24);
+    animation: slideUp 300ms ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .modal-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--system-40);
+    border-radius: 2px;
+    margin: 0 auto var(--m16);
+  }
+
+  /* Heading 2: Mona Sans 600 */
+  .modal h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--m4);
+  }
+
+  .modal .subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    margin-bottom: var(--m24);
+  }
+
+  /* Type selector */
+  .type-selector {
+    display: flex;
+    gap: var(--m8);
+    margin-bottom: var(--m24);
+  }
+
+  .type-option {
+    flex: 1;
+    padding: var(--m16) var(--m12);
+    border: 1.5px solid var(--border);
+    border-radius: var(--rounded-card);
+    background: var(--white);
+    cursor: pointer;
+    text-align: center;
+    transition: all var(--transition);
+    min-height: 48px;
+  }
+
+  .type-option.selected {
+    border-color: var(--primary);
+    background: var(--system-30);
+  }
+
+  .type-option .type-icon {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: var(--m4);
+  }
+
+  .type-option .type-label {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Form Inputs - Sec 7.4 */
+  .form-group {
+    margin-bottom: var(--m16);
+  }
+
+  /* Label/Tag: 12px, Geist 600 - Sec 5.2 */
+  .form-group label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: var(--m8);
+    color: var(--text-primary);
+    letter-spacing: 0.2px;
+  }
+
+  /* Sec 7.4: 1px solid #DCE0E6, border-radius 14px, padding 12px H / 10px V */
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-input);
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color var(--transition);
+    background: var(--white);
+  }
+
+  /* Sec 7.4: Placeholder #777D8C */
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: var(--text-tertiary); }
+
+  /* Sec 7.4: Focus border #3A67EF */
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--primary);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 80px; }
+
+  .img-upload {
+    border: 2px dashed var(--border);
+    border-radius: var(--rounded-input);
+    padding: var(--m24);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .img-upload:hover { border-color: var(--primary); background: var(--system-30); }
+  .img-upload input { display: none; }
+  .img-upload .upload-text { font-size: 13px; color: var(--text-tertiary); }
+  .img-upload .upload-icon { font-size: 24px; color: var(--system-60); margin-bottom: var(--m4); }
+
+  .img-upload.has-image { padding: 0; border-style: solid; }
+
+  .img-upload.has-image img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    display: block;
+    border-radius: calc(var(--rounded-input) - 2px);
+  }
+
+  .price-input {
+    position: relative;
+  }
+
+  .price-input span {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .price-input input { padding-right: 44px; }
+
+  .category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--m8);
+  }
+
+  .category-chip {
+    padding: var(--m8) var(--m16);
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-badge);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--white);
+    color: var(--text-secondary);
+    transition: all var(--transition);
+  }
+
+  .category-chip.selected {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--rounded-btn);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: var(--m8);
+    transition: filter var(--transition);
+    background: var(--btn-gradient);
+    color: var(--white);
+    min-height: 48px;
+  }
+
+  .btn-submit:hover { filter: brightness(1.08); }
+
+  .btn-cancel {
+    width: 100%;
+    padding: var(--m12);
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    margin-top: var(--m8);
+    min-height: 44px;
+  }
+
+  /* Offer modal detail */
+  .offer-detail {
+    display: flex;
+    gap: var(--m12);
+    padding: var(--m16);
+    background: var(--system-30);
+    border-radius: var(--rounded-input);
+    border: 1px solid var(--system-40);
+    margin-bottom: var(--m16);
+  }
+
+  .offer-detail-img {
+    width: 56px;
+    height: 56px;
+    border-radius: calc(var(--rounded-input) - 2px);
+    background: var(--white);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--system-60);
+  }
+
+  .offer-detail-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .offer-detail-info h4 {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .offer-detail-info .offer-price {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .offer-detail-info .offer-seller {
+    font-size: 12px;
+    color: var(--text-tertiary);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--dark-section);
+    color: var(--white);
+    padding: var(--m12) var(--m24);
+    border-radius: var(--rounded-btn);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 300;
+    opacity: 0;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-top">
+    <h1>Marketplace</h1>
+    <button class="btn-primary" onclick="openNewModal()">+ New Listing</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" id="tab-all" onclick="setTab('all')">All <span class="count" id="count-all">0</span></button>
+    <button class="tab" id="tab-sale" onclick="setTab('sale')">For Sale <span class="count" id="count-sale">0</span></button>
+    <button class="tab" id="tab-wanted" onclick="setTab('wanted')">Wanted <span class="count" id="count-wanted">0</span></button>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search listings..." oninput="renderListings()">
+</div>
+
+<!-- Category Filters -->
+<div class="filter-bar" id="filterBar"></div>
+
+<!-- Listings -->
+<div class="listings" id="listingsContainer"></div>
+
+<!-- New Listing Modal -->
+<div class="modal-overlay" id="newModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Create Listing</h2>
+    <p class="subtitle">Post an item for sale or something you are looking for.</p>
+
+    <div class="type-selector">
+      <div class="type-option selected" id="type-sale" onclick="setType('sale')">
+        <div class="type-icon">S</div>
+        <div class="type-label">For Sale</div>
+      </div>
+      <div class="type-option" id="type-wanted" onclick="setType('wanted')">
+        <div class="type-icon">W</div>
+        <div class="type-label">Wanted</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>TITLE</label>
+      <input type="text" id="inputTitle" placeholder="e.g. IKEA Kallax Shelf">
+    </div>
+
+    <div class="form-group">
+      <label>DESCRIPTION</label>
+      <textarea id="inputDesc" placeholder="Condition, dimensions, reason for selling..."></textarea>
+    </div>
+
+    <div class="form-group" id="imageGroup">
+      <label>PHOTO</label>
+      <div class="img-upload" id="imgUpload" onclick="document.getElementById('imgInput').click()">
+        <input type="file" id="imgInput" accept="image/*" onchange="handleImage(event)">
+        <div class="upload-icon">&#9650;</div>
+        <div class="upload-text">Tap to add a photo</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label id="priceLabel">ASKING PRICE</label>
+      <div class="price-input">
+        <input type="number" id="inputPrice" placeholder="0" min="0">
+        <span>EUR</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>CATEGORY</label>
+      <div class="category-chips" id="categoryChips"></div>
+    </div>
+
+    <button class="btn-submit" onclick="submitListing()">Publish Listing</button>
+    <button class="btn-cancel" onclick="closeNewModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- Offer Modal -->
+<div class="modal-overlay" id="offerModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="offerModalTitle">Make an Offer</h2>
+    <p class="subtitle" id="offerModalSubtitle">Your offer will be sent via mChat to the seller.</p>
+
+    <div class="offer-detail" id="offerDetail"></div>
+
+    <div class="form-group" id="offerPriceGroup">
+      <label>YOUR OFFER</label>
+      <div class="price-input">
+        <input type="number" id="offerPrice" placeholder="0" min="0">
+        <span>EUR</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>MESSAGE (OPTIONAL)</label>
+      <textarea id="offerMessage" placeholder="Hi, I am interested in..."></textarea>
+    </div>
+
+    <button class="btn-submit" onclick="sendOffer()">Send via mChat</button>
+    <button class="btn-cancel" onclick="closeOfferModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const CATEGORIES = ['Furniture', 'Electronics', 'Books', 'Kitchen', 'Sports', 'Office', 'Other'];
+
+  let listings = [
+    {
+      id: 1, type: 'sale', title: 'IKEA Kallax Shelf (2x4)',
+      desc: 'White, good condition. Small scratch on the left side. Pickup from Worms office, ground floor.',
+      price: 35, category: 'Furniture', seller: 'Elif Keskin',
+      img: null, date: '2026-03-28'
+    },
+    {
+      id: 2, type: 'sale', title: 'Logitech MX Master 3',
+      desc: 'Used for 6 months, works perfectly. Includes USB-C cable and dongle.',
+      price: 45, category: 'Electronics', seller: 'Berkay Saribas',
+      img: null, date: '2026-03-27'
+    },
+    {
+      id: 3, type: 'wanted', title: 'Standing Desk',
+      desc: 'Looking for an electric height-adjustable desk, 120cm or wider. Budget up to 150 EUR.',
+      price: 150, category: 'Office', seller: 'Ozgur Koyun',
+      img: null, date: '2026-03-29'
+    },
+    {
+      id: 4, type: 'sale', title: 'Coffee Machine (DeLonghi Magnifica)',
+      desc: 'Fully automatic. Descaled regularly. Moving to a smaller kitchen, does not fit anymore.',
+      price: 120, category: 'Kitchen', seller: 'Marcus Lippert',
+      img: null, date: '2026-03-26'
+    },
+    {
+      id: 5, type: 'wanted', title: 'Bicycle Pump',
+      desc: 'Need a floor pump for a few days. Happy to borrow or buy a cheap one.',
+      price: 10, category: 'Sports', seller: 'Jan Wunderlich',
+      img: null, date: '2026-03-30'
+    },
+    {
+      id: 6, type: 'sale', title: 'Herman Miller Aeron (Size B)',
+      desc: 'Office chair in great shape. Fully loaded model with lumbar support. Selling because I switched to a standing desk.',
+      price: 380, category: 'Furniture', seller: 'Necati Ozal',
+      img: null, date: '2026-03-25'
+    }
+  ];
+
+  let currentTab = 'all';
+  let currentCategory = null;
+  let newType = 'sale';
+  let selectedCategory = null;
+  let uploadedImage = null;
+  let nextId = 100;
+  let offerItemId = null;
+
+  const placeholders = {
+    Furniture: 'F', Electronics: 'E', Books: 'B',
+    Kitchen: 'K', Sports: 'S', Office: 'O', Other: '?'
+  };
+
+  function init() {
+    renderFilterBar();
+    renderCategoryChips();
+    updateCounts();
+    renderListings();
+  }
+
+  function updateCounts() {
+    document.getElementById('count-all').textContent = listings.length;
+    document.getElementById('count-sale').textContent = listings.filter(l => l.type === 'sale').length;
+    document.getElementById('count-wanted').textContent = listings.filter(l => l.type === 'wanted').length;
+  }
+
+  function setTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    renderListings();
+  }
+
+  function renderFilterBar() {
+    const bar = document.getElementById('filterBar');
+    bar.innerHTML = '<div class="filter-chip active" onclick="setCategory(null, this)">All</div>' +
+      CATEGORIES.map(c =>
+        '<div class="filter-chip" onclick="setCategory(\'' + c + '\', this)">' + c + '</div>'
+      ).join('');
+  }
+
+  function setCategory(cat, el) {
+    currentCategory = cat;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    if (el) el.classList.add('active');
+    renderListings();
+  }
+
+  function renderListings() {
+    const container = document.getElementById('listingsContainer');
+    const search = document.getElementById('searchInput').value.toLowerCase();
+
+    let filtered = listings.filter(l => {
+      if (currentTab !== 'all' && l.type !== currentTab) return false;
+      if (currentCategory && l.category !== currentCategory) return false;
+      if (search && !l.title.toLowerCase().includes(search) && !l.desc.toLowerCase().includes(search)) return false;
+      return true;
+    });
+
+    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7h8M8 11h5"/></svg>' +
+        '<h3>No listings found</h3>' +
+        '<p>Try a different search or category.</p></div>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(l => {
+      const isSale = l.type === 'sale';
+      const imgContent = l.img
+        ? '<img src="' + l.img + '" alt="">'
+        : placeholders[l.category] || '?';
+      const btnClass = isSale ? 'btn-offer-sale' : 'btn-offer-wanted';
+      const btnText = isSale ? 'Make Offer' : 'I Have This';
+      const priceText = isSale
+        ? l.price + ' EUR'
+        : 'up to ' + l.price + ' EUR';
+      const priceClass = isSale ? 'price' : 'price wanted';
+      const badgeClass = isSale ? 'badge badge-sale' : 'badge badge-wanted';
+      const badgeText = isSale ? 'For Sale' : 'Wanted';
+
+      return '<div class="card">' +
+        '<div class="card-body">' +
+          '<div class="card-img">' + imgContent + '</div>' +
+          '<div class="card-info">' +
+            '<div class="card-top-row">' +
+              '<h3>' + escHtml(l.title) + '</h3>' +
+              '<span class="' + badgeClass + '">' + badgeText + '</span>' +
+            '</div>' +
+            '<p>' + escHtml(l.desc) + '</p>' +
+            '<div class="card-meta">' +
+              '<span class="' + priceClass + '">' + priceText + '</span>' +
+              '<span class="card-seller">' + l.seller + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="card-actions">' +
+          '<button class="btn-offer ' + btnClass + '" onclick="openOfferModal(' + l.id + ')">' + btnText + '</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderCategoryChips() {
+    const container = document.getElementById('categoryChips');
+    container.innerHTML = CATEGORIES.map(c =>
+      '<div class="category-chip" onclick="selectFormCategory(this, \'' + c + '\')">' + c + '</div>'
+    ).join('');
+  }
+
+  function selectFormCategory(el, cat) {
+    selectedCategory = cat;
+    document.querySelectorAll('#categoryChips .category-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function setType(type) {
+    newType = type;
+    document.getElementById('type-sale').classList.toggle('selected', type === 'sale');
+    document.getElementById('type-wanted').classList.toggle('selected', type === 'wanted');
+    document.getElementById('priceLabel').textContent = type === 'sale' ? 'ASKING PRICE' : 'MAX BUDGET';
+    document.getElementById('imageGroup').style.display = type === 'sale' ? 'block' : 'none';
+  }
+
+  function handleImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      uploadedImage = ev.target.result;
+      const upload = document.getElementById('imgUpload');
+      upload.innerHTML = '<img src="' + uploadedImage + '" alt="Preview"><input type="file" id="imgInput" accept="image/*" onchange="handleImage(event)">';
+      upload.classList.add('has-image');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function openNewModal() {
+    document.getElementById('newModal').classList.add('open');
+    resetForm();
+  }
+
+  function closeNewModal() {
+    document.getElementById('newModal').classList.remove('open');
+  }
+
+  function resetForm() {
+    document.getElementById('inputTitle').value = '';
+    document.getElementById('inputDesc').value = '';
+    document.getElementById('inputPrice').value = '';
+    uploadedImage = null;
+    selectedCategory = null;
+    newType = 'sale';
+    setType('sale');
+    document.querySelectorAll('#categoryChips .category-chip').forEach(c => c.classList.remove('selected'));
+    const upload = document.getElementById('imgUpload');
+    upload.innerHTML = '<input type="file" id="imgInput" accept="image/*" onchange="handleImage(event)"><div class="upload-icon">&#9650;</div><div class="upload-text">Tap to add a photo</div>';
+    upload.classList.remove('has-image');
+  }
+
+  function submitListing() {
+    const title = document.getElementById('inputTitle').value.trim();
+    const desc = document.getElementById('inputDesc').value.trim();
+    const price = parseInt(document.getElementById('inputPrice').value) || 0;
+
+    if (!title) { showToast('Please enter a title'); return; }
+    if (!desc) { showToast('Please add a description'); return; }
+    if (price <= 0) { showToast('Please set a price'); return; }
+    if (!selectedCategory) { showToast('Please pick a category'); return; }
+
+    listings.push({
+      id: nextId++,
+      type: newType,
+      title: title,
+      desc: desc,
+      price: price,
+      category: selectedCategory,
+      seller: 'You',
+      img: uploadedImage,
+      date: new Date().toISOString().split('T')[0]
+    });
+
+    closeNewModal();
+    updateCounts();
+    renderListings();
+    showToast(newType === 'sale' ? 'Listed for sale!' : 'Wanted post published!');
+  }
+
+  function openOfferModal(id) {
+    offerItemId = id;
+    const item = listings.find(l => l.id === id);
+    if (!item) return;
+
+    const isSale = item.type === 'sale';
+    document.getElementById('offerModalTitle').textContent = isSale ? 'Make an Offer' : 'I Have This Item';
+    document.getElementById('offerModalSubtitle').textContent = isSale
+      ? 'Your offer will be sent via mChat to ' + item.seller + '.'
+      : 'Let ' + item.seller + ' know you have what they need.';
+
+    document.getElementById('offerPriceGroup').querySelector('label').textContent =
+      isSale ? 'YOUR OFFER' : 'YOUR ASKING PRICE';
+
+    const imgContent = item.img
+      ? '<img src="' + item.img + '" alt="">'
+      : placeholders[item.category] || '?';
+
+    document.getElementById('offerDetail').innerHTML =
+      '<div class="offer-detail-img">' + imgContent + '</div>' +
+      '<div class="offer-detail-info">' +
+        '<h4>' + escHtml(item.title) + '</h4>' +
+        '<div class="offer-price">' + (isSale ? item.price + ' EUR' : 'up to ' + item.price + ' EUR') + '</div>' +
+        '<div class="offer-seller">' + item.seller + '</div>' +
+      '</div>';
+
+    document.getElementById('offerPrice').value = '';
+    document.getElementById('offerMessage').value = '';
+    document.getElementById('offerModal').classList.add('open');
+  }
+
+  function closeOfferModal() {
+    document.getElementById('offerModal').classList.remove('open');
+  }
+
+  function sendOffer() {
+    const price = parseInt(document.getElementById('offerPrice').value) || 0;
+    if (price <= 0) { showToast('Please enter a price'); return; }
+
+    const item = listings.find(l => l.id === offerItemId);
+    if (!item) return;
+
+    closeOfferModal();
+    showToast('Offer sent to ' + item.seller + ' via mChat');
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function escHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  init();
+</script>
+</body>
+</html>

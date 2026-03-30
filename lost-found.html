@@ -110,7 +110,7 @@
     }
 
     .main-content {
-      padding: 24px 20px;
+      padding: 24px 16px;
       background: var(--background);
       min-height: calc(100vh - 200px);
     }
@@ -199,7 +199,7 @@
 
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: 1fr;
       gap: 20px;
     }
 
@@ -472,6 +472,20 @@
       margin-bottom: 20px;
       font-size: 13px;
       color: var(--text-secondary);
+    }
+
+    @media (min-width: 600px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (min-width: 960px) {
+      .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
     }
 
     @media (max-width: 768px) {

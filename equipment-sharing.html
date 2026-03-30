@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipment Sharing - mPower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #3A67EF;
+      --secondary: #48A6CD;
+      --text-primary: #121925;
+      --text-secondary: #4A4E59;
+      --text-tertiary: #777D8C;
+      --background: #F2F5F8;
+      --border: #DCE0E6;
+      --btn-gradient: linear-gradient(135deg, #0014FF, #0012E1);
+      --btn-radius: 14px;
+      --badge-color: #48A6CD;
+      --badge-bg: rgba(72, 166, 205, 0.1);
+      --badge-border: rgba(72, 166, 205, 0.15);
+      --font-display: "Mona Sans", sans-serif;
+      --font-body: "Geist Sans", "Geist", sans-serif;
+      --success: #1DAC76;
+      --warning: #F0BE48;
+      --system-60: #B9C1D1;
+      --system-40: #E2E7F2;
+      --system-30: #EFF2F8;
+      --white: #FFFFFF;
+      --rounded-card: 18px;
+      --rounded-btn: 14px;
+      --rounded-input: 14px;
+      --rounded-badge: 50px;
+      --rounded-modal: 18px;
+      --transition: 300ms ease;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--background);
+      color: var(--text-primary);
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .header-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .controls {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-input);
+      font-family: var(--font-body);
+      font-size: 14px;
+      background-color: var(--white);
+      color: var(--text-primary);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(58, 103, 239, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      font-size: 16px;
+    }
+
+    .category-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background-color: var(--white);
+      border-radius: var(--rounded-badge);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .chip.active {
+      background-color: var(--badge-bg);
+      border-color: var(--badge-color);
+      color: var(--badge-color);
+    }
+
+    .equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .equipment-card {
+      background-color: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-card);
+      padding: 16px;
+      transition: transform var(--transition), box-shadow var(--transition);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .equipment-card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: var(--rounded-badge);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-badge.available {
+      background-color: rgba(29, 172, 118, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(29, 172, 118, 0.2);
+    }
+
+    .status-badge.lent-out {
+      background-color: rgba(185, 193, 209, 0.1);
+      color: var(--system-60);
+      border: 1px solid rgba(185, 193, 209, 0.2);
+    }
+
+    .card-category {
+      display: inline-block;
+      padding: 4px 8px;
+      background-color: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--badge-color);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .card-description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .card-owner {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--system-40);
+    }
+
+    .borrow-btn {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--btn-gradient);
+      color: var(--white);
+      border: none;
+      border-radius: var(--btn-radius);
+      font-size: 14px;
+      font-weight: 600;
+      min-height: 48px;
+      cursor: pointer;
+      transition: opacity var(--transition);
+      font-family: var(--font-body);
+    }
+
+    .borrow-btn:hover {
+      opacity: 0.9;
+    }
+
+    .borrow-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-tertiary);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state-text {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background-color: var(--white);
+      border-radius: var(--rounded-modal);
+      padding: 24px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      animation: slideUp 300ms ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .modal-body {
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--rounded-input);
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-primary);
+      transition: border-color var(--transition);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(58, 103, 239, 0.1);
+    }
+
+    .note-text {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      border-radius: var(--btn-radius);
+      font-size: 14px;
+      font-weight: 600;
+      min-height: 48px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--btn-gradient);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background-color: var(--system-40);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--system-30);
+    }
+
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+      }
+
+      .search-box {
+        order: -1;
+      }
+
+      .category-chips {
+        width: 100%;
+      }
+
+      .equipment-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Equipment Sharing</h1>
+      <p class="header-desc">Browse and borrow equipment from your colleagues</p>
+    </header>
+
+    <div class="controls">
+      <div class="search-box">
+        <span class="search-icon">&#128269;</span>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search equipment..."
+          aria-label="Search equipment"
+        >
+      </div>
+      <div class="category-chips">
+        <button class="chip active" data-category="all">All</button>
+        <button class="chip" data-category="Tools">Tools</button>
+        <button class="chip" data-category="Kitchen">Kitchen</button>
+        <button class="chip" data-category="Electronics">Electronics</button>
+        <button class="chip" data-category="Sports">Sports</button>
+        <button class="chip" data-category="Office">Office</button>
+        <button class="chip" data-category="Other">Other</button>
+      </div>
+    </div>
+
+    <div class="equipment-grid" id="equipmentGrid">
+      <!-- Equipment cards rendered here -->
+    </div>
+
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <div class="empty-state-icon">&#128225;</div>
+      <div class="empty-state-text">No equipment found</div>
+    </div>
+  </div>
+
+  <!-- Borrow Modal -->
+  <div class="modal-overlay" id="borrowModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Borrow Equipment</div>
+        <div class="modal-subtitle" id="borrowItemName"></div>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input
+            type="text"
+            class="form-input"
+            id="borrowerName"
+            placeholder="Your full name"
+            readonly
+          >
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea
+            class="form-textarea"
+            id="borrowMessage"
+            placeholder="Tell them when you need it and how long..."
+          ></textarea>
+          <div class="note-text">
+            For long-term borrows (30+ days), mSign confirmation will be required from the owner.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeBorrowModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="sendBorrowRequest()">Send Request via mChat</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Demo data
+    const equipment = [
+      {
+        id: 1,
+        name: "Bosch Drill Set",
+        description: "Complete cordless drill kit with multiple bits and cases",
+        category: "Tools",
+        owner: "Necati Ozal",
+        status: "available"
+      },
+      {
+        id: 2,
+        name: "Waffle Maker",
+        description: "Belgian waffle maker with non-stick surface",
+        category: "Kitchen",
+        owner: "Berkay Saribas",
+        status: "lent-out"
+      },
+      {
+        id: 3,
+        name: "Portable Projector",
+        description: "4K portable projector perfect for presentations and meetings",
+        category: "Electronics",
+        owner: "Elif Keskin",
+        status: "available"
+      },
+      {
+        id: 4,
+        name: "Floor Bicycle Pump",
+        description: "Heavy-duty floor pump with pressure gauge",
+        category: "Sports",
+        owner: "Ozgur Koyun",
+        status: "available"
+      },
+      {
+        id: 5,
+        name: "USB-C Hub Adapter",
+        description: "7-in-1 USB-C hub with HDMI, USB 3.0, and card reader",
+        category: "Electronics",
+        owner: "Marcus Lippert",
+        status: "available"
+      },
+      {
+        id: 6,
+        name: "Board Games Collection",
+        description: "Selection of modern board games including Catan, Ticket to Ride, and more",
+        category: "Other",
+        owner: "Jan Wunderlich",
+        status: "available"
+      }
+    ];
+
+    let currentFilter = "all";
+    let currentSearchTerm = "";
+    let currentBorrowItem = null;
+
+    // Initialize
+    document.addEventListener("DOMContentLoaded", () => {
+      renderEquipment();
+      setupEventListeners();
+
+      // Set borrower name to first available owner (simulating logged-in user)
+      document.getElementById("borrowerName").value = "Current User";
+    });
+
+    function setupEventListeners() {
+      // Search input
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        currentSearchTerm = e.target.value.toLowerCase();
+        renderEquipment();
+      });
+
+      // Category chips
+      document.querySelectorAll(".chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+          chip.classList.add("active");
+          currentFilter = chip.dataset.category;
+          renderEquipment();
+        });
+      });
+
+      // Close modal on overlay click
+      document.getElementById("borrowModal").addEventListener("click", (e) => {
+        if (e.target.id === "borrowModal") {
+          closeBorrowModal();
+        }
+      });
+    }
+
+    function getFilteredEquipment() {
+      return equipment.filter(item => {
+        const matchesCategory = currentFilter === "all" || item.category === currentFilter;
+        const matchesSearch =
+          item.name.toLowerCase().includes(currentSearchTerm) ||
+          item.description.toLowerCase().includes(currentSearchTerm) ||
+          item.owner.toLowerCase().includes(currentSearchTerm);
+
+        return matchesCategory && matchesSearch;
+      });
+    }
+
+    function renderEquipment() {
+      const grid = document.getElementById("equipmentGrid");
+      const emptyState = document.getElementById("emptyState");
+      const filtered = getFilteredEquipment();
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "";
+        emptyState.style.display = "block";
+        return;
+      }
+
+      emptyState.style.display = "none";
+      grid.innerHTML = filtered.map(item => `
+        <div class="equipment-card">
+          <div class="card-header">
+            <div class="card-title">${escapeHtml(item.name)}</div>
+            <div class="status-badge ${item.status}">
+              ${item.status === "available" ? "Available" : "Lent Out"}
+            </div>
+          </div>
+          <div class="card-category">${escapeHtml(item.category)}</div>
+          <div class="card-description">${escapeHtml(item.description)}</div>
+          <div class="card-owner">Owner: ${escapeHtml(item.owner)}</div>
+          <div class="card-footer">
+            <button
+              class="borrow-btn"
+              onclick="openBorrowModal(${item.id})"
+              ${item.status === "lent-out" ? "disabled" : ""}
+            >
+              ${item.status === "lent-out" ? "Currently Unavailable" : "Request to Borrow"}
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function openBorrowModal(itemId) {
+      currentBorrowItem = equipment.find(item => item.id === itemId);
+      if (!currentBorrowItem) return;
+
+      document.getElementById("borrowItemName").textContent = currentBorrowItem.name;
+      document.getElementById("borrowMessage").value = "";
+      document.getElementById("borrowModal").classList.add("active");
+    }
+
+    function closeBorrowModal() {
+      document.getElementById("borrowModal").classList.remove("active");
+      currentBorrowItem = null;
+    }
+
+    function sendBorrowRequest() {
+      const borrowerName = document.getElementById("borrowerName").value.trim();
+      const message = document.getElementById("borrowMessage").value.trim();
+
+      if (!borrowerName || !message) {
+        alert("Please fill in all fields");
+        return;
+      }
+
+      if (!currentBorrowItem) return;
+
+      // Simulate sending via mChat
+      const chatMessage = `Hi ${currentBorrowItem.owner}, I'd like to borrow your "${currentBorrowItem.name}". ${message}`;
+
+      console.log("Borrow request:", {
+        item: currentBorrowItem.name,
+        owner: currentBorrowItem.owner,
+        requester: borrowerName,
+        message: chatMessage
+      });
+
+      // Show success feedback
+      const originalText = event.target.textContent;
+      event.target.textContent = "Request Sent!";
+      event.target.disabled = true;
+
+      setTimeout(() => {
+        closeBorrowModal();
+        event.target.textContent = originalText;
+        event.target.disabled = false;
+      }, 1500);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

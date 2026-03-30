@@ -213,6 +213,31 @@
       flex-direction: column;
     }
 
+    .event-card-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px 12px 0 0;
+      background-color: var(--system-40);
+      position: relative;
+    }
+
+    .event-card-image-container {
+      position: relative;
+      width: 100%;
+      height: 160px;
+      overflow: hidden;
+      border-radius: 12px 12px 0 0;
+      background-color: var(--system-40);
+    }
+
+    .event-date-block-overlay {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+    }
+
     .event-card:hover {
       transform: scale(1.01);
       box-shadow: 0 8px 24px rgba(58, 103, 239, 0.12);
@@ -222,7 +247,7 @@
       display: flex;
       gap: 16px;
       padding: 16px;
-      background-color: var(--system-30);
+      background-color: var(--white);
     }
 
     .event-date-block {
@@ -767,7 +792,8 @@
           "Weinstube am Dom": 8,
           "Hagenbräu": 4,
           "Eichenschenke": 2
-        }
+        },
+        image: "https://picsum.photos/seed/afterworkbar/400/200"
       },
       {
         id: 2,
@@ -781,7 +807,8 @@
         participants: ["Elif Keskin", "Jan Wunderlich", "Marcus Lippert", "Ozgur Koyun"],
         organizer: "Elif Keskin",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/boardgamenight/400/200"
       },
       {
         id: 3,
@@ -796,7 +823,8 @@
         organizer: "Berkay Saribas",
         pollQuestion: null,
         pollOptions: {},
-        recurring: "every Wednesday"
+        recurring: "every Wednesday",
+        image: "https://picsum.photos/seed/runninggroup/400/200"
       },
       {
         id: 4,
@@ -813,7 +841,8 @@
         pollOptions: {
           "Python 3.10": 7,
           "Python 3.11": 5
-        }
+        },
+        image: "https://picsum.photos/seed/pythoncode/400/200"
       },
       {
         id: 5,
@@ -831,7 +860,8 @@
           "Beer": 4,
           "Wine": 2,
           "Cocktails": 3
-        }
+        },
+        image: "https://picsum.photos/seed/karaokenight/400/200"
       },
       {
         id: 6,
@@ -845,7 +875,8 @@
         participants: ["Necati Ozal", "Berkay Saribas", "Ozgur Koyun", "Marcus Lippert", "David Koch", "Jan Wunderlich"],
         organizer: "Berkay Saribas",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/footballmatch/400/200"
       },
       {
         id: 7,
@@ -859,7 +890,8 @@
         participants: ["Lisa Mueller", "Anna Schmidt", "Sophie Becker", "Lena Fischer"],
         organizer: "Sophie Becker",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/yogaclass/400/200"
       },
       {
         id: 8,
@@ -876,7 +908,8 @@
         pollOptions: {
           "90 minutes": 3,
           "120 minutes": 3
-        }
+        },
+        image: "https://picsum.photos/seed/museumvisit/400/200"
       },
       {
         id: 9,
@@ -890,7 +923,8 @@
         participants: ["Elif Keskin", "Jan Wunderlich", "Marcus Lippert", "David Koch", "Ozgur Koyun"],
         organizer: "Jan Wunderlich",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/escaperoom/400/200"
       },
       {
         id: 10,
@@ -907,7 +941,8 @@
         pollOptions: {
           "Red": 4,
           "White": 2
-        }
+        },
+        image: "https://picsum.photos/seed/winetasting/400/200"
       },
       {
         id: 11,
@@ -924,7 +959,8 @@
         pollOptions: {
           "Sauerbraten": 5,
           "Schnitzel": 4
-        }
+        },
+        image: "https://picsum.photos/seed/cookingclass/400/200"
       },
       {
         id: 12,
@@ -938,7 +974,8 @@
         participants: ["Necati Ozal", "Marcus Lippert", "Jan Wunderlich", "Ozgur Koyun", "David Koch", "Anna Schmidt", "Felix Braun", "Julia Hoffmann", "Lena Fischer", "Tim Hartmann"],
         organizer: "Necati Ozal",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/ailecture/400/200"
       },
       {
         id: 13,
@@ -955,7 +992,8 @@
         pollOptions: {
           "Teams of 2": 3,
           "Teams of 4": 2
-        }
+        },
+        image: "https://picsum.photos/seed/bowlingalley/400/200"
       },
       {
         id: 14,
@@ -969,7 +1007,8 @@
         participants: ["Jan Wunderlich", "Marcus Lippert", "David Koch"],
         organizer: "Jan Wunderlich",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/tabletennismatch/400/200"
       },
       {
         id: 15,
@@ -983,7 +1022,8 @@
         participants: ["Berkay Saribas", "Ozgur Koyun", "Felix Braun"],
         organizer: "Ozgur Koyun",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/cyclingtour/400/200"
       },
       {
         id: 16,
@@ -1000,7 +1040,8 @@
         pollOptions: {
           "Comedy": 4,
           "Drama": 2
-        }
+        },
+        image: "https://picsum.photos/seed/movienightpopcorn/400/200"
       },
       {
         id: 17,
@@ -1014,7 +1055,8 @@
         participants: ["Marcus Lippert", "Jan Wunderlich", "David Koch", "Anna Schmidt", "Lena Fischer"],
         organizer: "Marcus Lippert",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/presentation/400/200"
       },
       {
         id: 18,
@@ -1031,7 +1073,8 @@
         pollOptions: {
           "Easy": 2,
           "Moderate": 2
-        }
+        },
+        image: "https://picsum.photos/seed/hikingnature/400/200"
       },
       {
         id: 19,
@@ -1045,7 +1088,8 @@
         participants: ["Marcus Lippert", "Ozgur Koyun", "David Koch", "Berkay Saribas"],
         organizer: "Marcus Lippert",
         pollQuestion: null,
-        pollOptions: {}
+        pollOptions: {},
+        image: "https://picsum.photos/seed/gokartracing/400/200"
       },
       {
         id: 20,
@@ -1060,7 +1104,8 @@
         organizer: "Jan Wunderlich",
         pollQuestion: null,
         pollOptions: {},
-        recurring: "every Tuesday"
+        recurring: "every Tuesday",
+        image: "https://picsum.photos/seed/germanlanguage/400/200"
       }
     ];
 
@@ -1219,12 +1264,18 @@
         }
 
         card.innerHTML = `
-          <div class="event-card-header">
-            <div class="event-date-block">
-              <div class="event-date-block-day">${day}</div>
-              <div class="event-date-block-date">${dayNum}</div>
-              <div class="event-date-block-time">${event.time}</div>
+          <div class="event-card-image-container">
+            <img src="${event.image}" alt="${event.title}" class="event-card-image">
+            <div class="event-date-block-overlay">
+              <div class="event-date-block">
+                <div class="event-date-block-day">${day}</div>
+                <div class="event-date-block-date">${dayNum}</div>
+                <div class="event-date-block-time">${event.time}</div>
+              </div>
             </div>
+          </div>
+
+          <div class="event-card-header">
             <div class="event-header-info">
               <div class="event-category">${event.category}</div>
               <div class="event-status ${status.toLowerCase()}">${status}</div>

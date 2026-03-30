@@ -55,7 +55,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 16px;
         }
@@ -113,6 +113,9 @@
             border-radius: var(--rounded-card);
             border: 1px solid var(--border);
             margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .form-group {
@@ -199,6 +202,21 @@
         .lunch-grid {
             display: grid;
             gap: 16px;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 600px) {
+            .lunch-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 960px) {
+            .lunch-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 24px;
+            }
         }
 
         .lunch-card {
@@ -208,6 +226,8 @@
             overflow: hidden;
             transition: var(--transition);
             cursor: default;
+            display: flex;
+            flex-direction: column;
         }
 
         .lunch-card:hover {
@@ -299,6 +319,9 @@
             border-radius: var(--rounded-card);
             padding: 16px;
             margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .poll-title {

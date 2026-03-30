@@ -259,6 +259,33 @@
             padding: 20px;
             transition: all var(--transition);
             cursor: default;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .card-image {
+            width: 100px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-left: 16px;
+            flex-shrink: 0;
+            background-color: var(--background);
+        }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header-with-image {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 12px;
         }
 
         .suggestion-card:hover {
@@ -270,8 +297,8 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 12px;
             gap: 12px;
+            flex: 1;
         }
 
         .card-title {
@@ -495,7 +522,8 @@
                 status: "Approved",
                 votes: 12,
                 submittedBy: "Necati Ozal",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/standingdesk/300/160"
             },
             {
                 id: 2,
@@ -506,7 +534,8 @@
                 status: "Under Review",
                 votes: 8,
                 submittedBy: "Berkay Saribas",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/premiumcoffee/300/160"
             },
             {
                 id: 3,
@@ -517,7 +546,8 @@
                 status: "New",
                 votes: 5,
                 submittedBy: "Elif Keskin",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/acousticpanel/300/160"
             },
             {
                 id: 4,
@@ -528,7 +558,8 @@
                 status: "New",
                 votes: 3,
                 submittedBy: "Ozgur Koyun",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/outdoorterrace/300/160"
             },
             {
                 id: 5,
@@ -539,7 +570,8 @@
                 status: "New",
                 votes: 2,
                 submittedBy: "Marcus Lippert",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/ergonomicchair/300/160"
             },
             {
                 id: 6,
@@ -550,7 +582,8 @@
                 status: "Approved",
                 votes: 18,
                 submittedBy: "Jan Wunderlich",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/monitorarm/300/160"
             },
             {
                 id: 7,
@@ -561,7 +594,8 @@
                 status: "Under Review",
                 votes: 14,
                 submittedBy: "Lisa Mueller",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/sparklingwater/300/160"
             },
             {
                 id: 8,
@@ -572,7 +606,8 @@
                 status: "Under Review",
                 votes: 10,
                 submittedBy: "Thomas Weber",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/digitalboard/300/160"
             },
             {
                 id: 9,
@@ -583,7 +618,8 @@
                 status: "New",
                 votes: 7,
                 submittedBy: "Anna Schmidt",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/meditationroom/300/160"
             },
             {
                 id: 10,
@@ -594,7 +630,8 @@
                 status: "Approved",
                 votes: 20,
                 submittedBy: "Felix Braun",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/ergonomicchair/300/160"
             },
             {
                 id: 11,
@@ -605,7 +642,8 @@
                 status: "Completed",
                 votes: 11,
                 submittedBy: "Julia Hoffmann",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/kitchenmicrowave/300/160"
             },
             {
                 id: 12,
@@ -616,7 +654,8 @@
                 status: "Under Review",
                 votes: 16,
                 submittedBy: "David Koch",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/greenwall/300/160"
             },
             {
                 id: 13,
@@ -627,7 +666,8 @@
                 status: "Under Review",
                 votes: 9,
                 submittedBy: "Lena Fischer",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/videoconf/300/160"
             },
             {
                 id: 14,
@@ -638,7 +678,8 @@
                 status: "Completed",
                 votes: 13,
                 submittedBy: "Markus Wagner",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/officelighting/300/160"
             },
             {
                 id: 15,
@@ -649,7 +690,8 @@
                 status: "Approved",
                 votes: 22,
                 submittedBy: "Sophie Becker",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/wifirouter/300/160"
             },
             {
                 id: 16,
@@ -660,7 +702,8 @@
                 status: "New",
                 votes: 4,
                 submittedBy: "Tim Hartmann",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/outdoorterrace/300/160"
             },
             {
                 id: 17,
@@ -671,7 +714,8 @@
                 status: "Completed",
                 votes: 15,
                 submittedBy: "Necati Ozal",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/dockstation/300/160"
             },
             {
                 id: 18,
@@ -682,7 +726,8 @@
                 status: "Completed",
                 votes: 17,
                 submittedBy: "Berkay Saribas",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/officedishwasher/300/160"
             },
             {
                 id: 19,
@@ -693,7 +738,8 @@
                 status: "Under Review",
                 votes: 6,
                 submittedBy: "Elif Keskin",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/showerfacility/300/160"
             },
             {
                 id: 20,
@@ -704,7 +750,8 @@
                 status: "New",
                 votes: 1,
                 submittedBy: "Ozgur Koyun",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/pingpongtable/300/160"
             },
             {
                 id: 21,
@@ -715,7 +762,8 @@
                 status: "New",
                 votes: 2,
                 submittedBy: "Marcus Lippert",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/videoconf/300/160"
             },
             {
                 id: 22,
@@ -726,7 +774,8 @@
                 status: "Approved",
                 votes: 19,
                 submittedBy: "Jan Wunderlich",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/fruitbasket/300/160"
             },
             {
                 id: 23,
@@ -737,7 +786,8 @@
                 status: "New",
                 votes: 3,
                 submittedBy: "Lisa Mueller",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/phonebooth/300/160"
             },
             {
                 id: 24,
@@ -748,7 +798,8 @@
                 status: "Completed",
                 votes: 12,
                 submittedBy: "Thomas Weber",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/meetingtablet/300/160"
             },
             {
                 id: 25,
@@ -759,7 +810,8 @@
                 status: "Under Review",
                 votes: 8,
                 submittedBy: "Anna Schmidt",
-                userVoted: false
+                userVoted: false,
+                image: "https://picsum.photos/seed/evcharger/300/160"
             }
         ];
 
@@ -870,13 +922,18 @@
 
             grid.innerHTML = sorted.map(suggestion => `
                 <div class="suggestion-card">
-                    <div class="card-header">
-                        <div class="card-title">${escapeHtml(suggestion.title)}</div>
-                        <div class="status-badge status-${suggestion.status.toLowerCase().replace(/ /g, '-')}">
-                            ${suggestion.status}
+                    <div class="card-header-with-image">
+                        <div class="card-content">
+                            <div class="card-header">
+                                <div class="card-title">${escapeHtml(suggestion.title)}</div>
+                                <div class="status-badge status-${suggestion.status.toLowerCase().replace(/ /g, '-')}">
+                                    ${suggestion.status}
+                                </div>
+                            </div>
+                            <p class="card-description">${escapeHtml(suggestion.description)}</p>
                         </div>
+                        ${suggestion.image ? `<img src="${suggestion.image}" alt="${escapeHtml(suggestion.title)}" class="card-image" onerror="this.style.backgroundColor='var(--background)'">` : '<div class="card-image" style="background-color: var(--background);"></div>'}
                     </div>
-                    <p class="card-description">${escapeHtml(suggestion.description)}</p>
                     <div class="card-meta">
                         <span class="category-tag">${escapeHtml(suggestion.category)}</span>
                         ${suggestion.cost ? `<span class="cost-estimate">Est. ~${suggestion.cost} EUR</span>` : ''}
